@@ -44,7 +44,7 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
           : "opacity-0 pointer-events-none"
       }`}>
       <div
-        className="absolute inset-0 bg-black/30 transition-opacity"
+        className="absolute inset-0 bg-black/30 backdrop-blur-xs transition-opacity"
         onClick={onClose}></div>
       <aside
         className={`fixed bottom-2 left-0 max-w-full flex transition-transform duration-300 ease-in-out transform ${
