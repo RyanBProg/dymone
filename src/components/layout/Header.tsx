@@ -1,91 +1,59 @@
+import { Menu } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export default function Header() {
   return (
-    <header className="navbar bg-base-100">
-      <div className="flex-none">
-        <div className="drawer">
-          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content">
-            {/* Page content here */}
-            <label
-              htmlFor="my-drawer"
-              className="btn btn-square btn-ghost drawer-button">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block h-5 w-5 stroke-current">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"></path>
-              </svg>
-            </label>
-          </div>
-          <div className="drawer-side">
-            <label
-              htmlFor="my-drawer"
-              aria-label="close sidebar"
-              className="drawer-overlay"></label>
-            <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-              {/* Sidebar content here */}
-              <li>
-                <a>Sidebar Item 1</a>
-              </li>
-              <li>
-                <a>Sidebar Item 2</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex-1">
-        <a className="btn btn-ghost text-xl">Dymoné</a>
-      </div>
-      <div className="flex-none">
-        <div className="drawer drawer-end">
-          <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content">
-            <label
-              htmlFor="my-drawer-4"
-              className="drawer-button btn btn-ghost">
-              <div className="indicator relative">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 z-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-                <span className="badge badge-sm indicator-item z-0">8</span>
-              </div>
-            </label>
-          </div>
-          <div className="drawer-side">
-            <label
-              htmlFor="my-drawer-4"
-              aria-label="close sidebar"
-              className="drawer-overlay"></label>
-            <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-              {/* Sidebar content here */}
-              <li>
-                <a>Sidebar Item 1</a>
-              </li>
-              <li>
-                <a>Sidebar Item 2</a>
-              </li>
-            </ul>
-          </div>
-        </div>
+    <header className="fixed flex justify-between p-2 w-full z-99">
+      <nav className="flex bg-white/60 backdrop-blur-sm shadow rounded-lg p-1">
+        <button className="md:hidden hover:cursor-pointer hover:bg-white font-medium inline-block rounded-md py-1 px-2 w-fit transition-colors">
+          <Menu strokeWidth={1.5} />
+        </button>
+        <ul className="hidden md:flex gap-2">
+          <li>
+            <Link
+              href="#"
+              className="hover:cursor-pointer hover:bg-white font-medium inline-block rounded-md py-1 px-2 w-fit transition-colors">
+              NEW IN
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="#"
+              className="hover:cursor-pointer hover:bg-white font-medium inline-block rounded-md py-1 px-2 w-fit transition-colors">
+              WATCHES
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="#"
+              className="hover:cursor-pointer hover:bg-white font-medium inline-block rounded-md py-1 px-2 w-fit transition-colors">
+              RINGS
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="#"
+              className="hover:cursor-pointer hover:bg-white font-medium inline-block rounded-md py-1 px-2 w-fit transition-colors">
+              NECKLACES
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="#"
+              className="hover:cursor-pointer hover:bg-white font-medium inline-block rounded-md py-1 px-2 w-fit transition-colors">
+              BRACELETS
+            </Link>
+          </li>
+        </ul>
+      </nav>
+      <div className="flex bg-white/60 backdrop-blur-sm shadow rounded-lg p-1">
+        <button className="hover:cursor-pointer hover:bg-white font-medium inline-block rounded-md py-1 px-2 w-fit transition-colors">
+          BAG
+          <span className="inline-block bg-neutral-500 text-white rounded-full h-6 w-6 ml-2">
+            0
+          </span>
+        </button>
       </div>
     </header>
   );

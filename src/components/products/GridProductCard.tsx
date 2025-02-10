@@ -1,33 +1,29 @@
+import { Plus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
-type Props = {
-  status: "sale" | "new" | null;
-};
-
-export default function GridProductCard({ status }: Props) {
+export default function GridProductCard() {
   return (
-    <div className="relative h-[400px] w-[300px] overflow-clip rounded-3xl">
-      {status && (
-        <div className="bg-white rounded-r-full p-1 absolute z-10 left-0 top-10 h-14 w-14 flex justify-center items-center">
-          <div className="border-2 rounded-full h-full w-full flex justify-center items-center">
-            {status === "sale" ? "SALE" : "NEW"}
-          </div>
+    <div>
+      <Link
+        href="#"
+        className="block relative h-[400px] w-[300px] overflow-clip rounded-3xl">
+        <Image src="/product.jpeg" alt="product" fill objectFit="cover" />
+        <div className="group absolute bottom-2 right-2 flex items-center gap-2">
+          <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/60 px-2 rounded-md">
+            Add to Cart
+          </span>
+          <button className="bg-white/60 p-1 rounded-full hover:cursor-pointer hover:bg-white">
+            <Plus strokeWidth={1.5} />
+          </button>
         </div>
-      )}
-      <Image src="/product.jpeg" alt="product" fill objectFit="cover" />
-      <div className="absolute grid gap-3 bg-white rounded-2xl inset-x-2 bottom-2 p-2">
+      </Link>
+      <div className="mt-2 grid gap-1">
         <span className="font-medium">Simpalé Watch</span>
         <div className="flex gap-1 items-center">
           <span className="font-light">$79.99</span>
           <span className="font-light line-through text-xs">$79.99</span>
-        </div>
-
-        <div className="flex justify-between">
-          <a href="#" className="btn btn-ghost">
-            View Product
-          </a>
-          <button className="btn btn-primary">Add to Cart</button>
         </div>
       </div>
     </div>

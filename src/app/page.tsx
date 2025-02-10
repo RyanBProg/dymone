@@ -3,8 +3,10 @@ import ProductGrid from "@/components/products/ProductGrid";
 
 export default function Home() {
   return (
-    <main className="">
+    <main className="mt-20">
       <ProductFilter />
+      <ProductGrid />
+      <ProductGrid />
       <ProductGrid />
     </main>
   );
