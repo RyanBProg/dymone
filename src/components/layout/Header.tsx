@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Header() {
   return (
-    <header className="fixed flex justify-between p-2 w-full z-99">
+    <header className="fixed flex justify-between p-2 w-full z-10">
       <nav className="flex bg-white/60 backdrop-blur-sm shadow rounded-lg p-1">
         <button className="md:hidden hover:cursor-pointer hover:bg-white font-medium inline-block rounded-md py-1 px-2 w-fit transition-colors">
           <Menu strokeWidth={1.5} />
