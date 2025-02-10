@@ -1,5 +1,4 @@
 import { Plus } from "lucide-react";
-import Image from "next/image";
 import ProductGallery from "@/components/products/ProductGallery";
 const productImages = [
   { src: "/product.jpeg?height=1080&width=1920", alt: "Product 1" },

@@ -1,7 +1,6 @@
 "use client";
 
 import { ShoppingBasket, X } from "lucide-react";
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const cart = [

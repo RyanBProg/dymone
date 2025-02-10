@@ -1,6 +1,5 @@
 "use client";
 
-import { Menu } from "lucide-react";
 import Link from "next/link";
 import NavMenu from "./NavMenu";
 import Cart from "./Cart";

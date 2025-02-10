@@ -24,11 +24,14 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
     "Diamonds",
   ];
 
-  const escFunction = useCallback((e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  }, []);
+  const escFunction = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    },
+    [onClose]
+  );
 
   useEffect(() => {
     document.addEventListener("keydown", escFunction);
