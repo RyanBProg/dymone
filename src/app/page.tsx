@@ -5,8 +5,11 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main>
-      <section className="h-screen w-screen">
+      <section className="relative h-screen w-screen">
         <Image src="/banner-1.jpeg" alt="" fill className="object-cover" />
+        <h1 className="tracking-tighter leading-14 sm:leading-23 md:leading-28 lg:leading-34 font-extrabold text-[4rem] sm:text-[7rem] md:text-[8rem] lg:text-[10rem] text-white/70 absolute max-w-min left-2 sm:left-5 md:left-20 top-1/2 -translate-y-1/2">
+          ELEGENCE CRAFTED
+        </h1>
       </section>
 
       <section className="relative w-full h-screen bg-black">
@@ -105,15 +108,17 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       <section className="relative h-screen w-screen">
         <Image src="/banner-2.jpeg" alt="" fill className="object-cover" />
         <div className="absolute inset-0 backdrop-blur-sm"></div>
-        <div className="absolute inset-20 overflow-clip rounded-4xl shadow">
+        <div className="absolute inset-5 sm:inset-10 md:inset-20 overflow-clip rounded-4xl shadow">
           <Image src="/banner-2.jpeg" alt="" fill className="object-cover" />
         </div>
       </section>
+
       <section className="h-screen bg-purple-100 py-20 px-5 md:px-20 flex flex-col justify-center gap-20">
-        <h2 className="tracking-tighter text-7xl font-medium max-w-prose">
+        <h2 className="tracking-tighter text-4xl md:text-7xl font-medium max-w-prose">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
           voluptates numquam earum illo natus! Architecto animi porro enim.
           Nulla consequuntur repellat eos.

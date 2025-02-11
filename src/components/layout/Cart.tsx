@@ -78,7 +78,7 @@ export default function Cart() {
       </div>
       <div
         ref={menuRef}
-        className={`absolute z-10 top-14 right-0 transition-all duration-300 bg-white/90 backdrop-blur-xs rounded-xl shadow ${
+        className={`w-[300px] sm:w-[450px] absolute z-10 top-14 right-0 transition-all duration-300 bg-white/90 backdrop-blur-xs rounded-xl shadow ${
           isMenuOpen
             ? "opacity-100 -translate-x-2"
             : "opacity-0 translate-x-full"
@@ -89,7 +89,7 @@ export default function Cart() {
         <ul className="flex flex-col gap-4 p-4">
           {cart.map((cartItem) => (
             <li key={cartItem.title}>
-              <div className="relative flex gap-4 w-[300px]">
+              <div className="relative flex gap-4">
                 <div className="h-16 w-16 bg-neutral-300 rounded-md"></div>
                 <div className="grow">
                   <div className="flex">
