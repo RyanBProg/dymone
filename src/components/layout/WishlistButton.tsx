@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, User, X } from "lucide-react";
+import { Bookmark, X } from "lucide-react";
 import { SignInButton, SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import { useMenuToggle } from "@/hooks/useMenuToggle";
 
