@@ -4,6 +4,7 @@ import Link from "next/link";
 import NavMenu from "./NavMenu";
 import Cart from "./Cart";
 import { Bookmark, User } from "lucide-react";
+import AccountButton from "./AccountButton";
 
 export default function Header() {
   return (
@@ -26,12 +27,7 @@ export default function Header() {
             <Bookmark size={20} strokeWidth={1.5} />
           </button>
         </div>
-        <div className="relative flex bg-white/70 backdrop-blur-sm shadow rounded-lg p-1">
-          <button className="hover:cursor-pointer hover:bg-white font-medium tracking-tighter flex justify-center items-center rounded-md px-2 transition-colors">
-            <User size={20} strokeWidth={1.5} />
-          </button>
-        </div>
-        {/* Cart */}
+        <AccountButton />
         <Cart />
       </div>
     </header>

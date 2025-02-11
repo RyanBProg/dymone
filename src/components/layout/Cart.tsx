@@ -64,7 +64,7 @@ export default function Cart() {
           ) : (
             <>
               <ShoppingBasket strokeWidth={1.5} size={20} />
-              <div className="absolute left-0 -translate-x-1/2 bg-pink-200 w-5 h-5 p-px text-xs text-center rounded-full">
+              <div className="absolute -top-2 -left-2 bg-pink-200 w-5 h-5 p-px text-xs text-center rounded-full">
                 0
               </div>
             </>
