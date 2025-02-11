@@ -1,10 +1,8 @@
-"use client";
-
 import Link from "next/link";
 import NavMenu from "./NavMenu";
 import Cart from "./Cart";
-import { Bookmark, User } from "lucide-react";
 import AccountButton from "./AccountButton";
+import WishlistButton from "./WishlistButton";
 
 export default function Header() {
   return (
@@ -22,11 +20,7 @@ export default function Header() {
       </div>
 
       <div className="flex gap-2">
-        <div className="relative flex bg-white/70 backdrop-blur-sm shadow rounded-lg p-1">
-          <button className="hover:cursor-pointer hover:bg-white font-medium tracking-tighter flex justify-center items-center rounded-md px-2 transition-colors">
-            <Bookmark size={20} strokeWidth={1.5} />
-          </button>
-        </div>
+        <WishlistButton />
         <AccountButton />
         <Cart />
       </div>

@@ -1,17 +1,10 @@
 "use client";
 
-import { User, X } from "lucide-react";
-import {
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  SignUpButton,
-  SignOutButton,
-} from "@clerk/nextjs";
-import Link from "next/link";
+import { Bookmark, User, X } from "lucide-react";
+import { SignInButton, SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import { useMenuToggle } from "@/hooks/useMenuToggle";
 
-export default function AccountButton() {
+export default function WishlistButton() {
   const { isMenuOpen, setIsMenuOpen, menuButtonRef, menuRef } = useMenuToggle();
 
   return (
@@ -24,7 +17,7 @@ export default function AccountButton() {
           {isMenuOpen ? (
             <X strokeWidth={1.5} size={20} />
           ) : (
-            <User size={20} strokeWidth={1.5} />
+            <Bookmark size={20} strokeWidth={1.5} />
           )}
         </button>
       </div>
@@ -38,7 +31,7 @@ export default function AccountButton() {
         <SignedOut>
           <div className="grid gap-2">
             <p className="text-sm p-2 text-neutral-700">
-              Sign in to see your account
+              Sign in to see your wishlist
             </p>
             <div className="flex gap-2">
               <SignInButton mode="modal">
@@ -55,33 +48,7 @@ export default function AccountButton() {
           </div>
         </SignedOut>
         <SignedIn>
-          <ul className="flex flex-col gap-2 items-end">
-            <li>
-              <Link
-                href="#"
-                onClick={() => setIsMenuOpen(false)}
-                className="hover:cursor-pointer hover:bg-white font-medium tracking-tighter inline-block rounded-md py-1 px-2 min-w-max transition-colors">
-                ORDERS
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#"
-                onClick={() => setIsMenuOpen(false)}
-                className="hover:cursor-pointer hover:bg-white font-medium tracking-tighter inline-block rounded-md py-1 px-2 min-w-max transition-colors">
-                MY ACCOUNT
-              </Link>
-            </li>
-            <li>
-              <SignOutButton>
-                <button
-                  onClick={() => setIsMenuOpen(false)}
-                  className="hover:cursor-pointer hover:bg-white font-medium tracking-tighter inline-block rounded-md py-1 px-2 min-w-max transition-colors">
-                  SIGN OUT
-                </button>
-              </SignOutButton>
-            </li>
-          </ul>
+          <p className="text-sm p-2 text-neutral-700">Wishlist is empty</p>
         </SignedIn>
       </div>
     </>
