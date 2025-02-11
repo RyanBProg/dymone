@@ -7,8 +7,8 @@ export default function Home() {
     <main>
       <section className="relative h-screen w-screen">
         <Image src="/banner-1.jpeg" alt="" fill className="object-cover" />
-        <h1 className="tracking-tighter leading-14 sm:leading-23 md:leading-28 lg:leading-34 font-extrabold text-[4rem] sm:text-[7rem] md:text-[8rem] lg:text-[10rem] text-white/70 absolute max-w-min left-2 sm:left-5 md:left-20 top-1/2 -translate-y-1/2">
-          ELEGENCE CRAFTED
+        <h1 className="tracking-tighter leading-14 sm:leading-23 md:leading-28 lg:leading-34 font-extrabold text-[4rem] sm:text-[7rem] md:text-[8rem] lg:text-[10rem] text-white/80 absolute max-w-min left-2 sm:left-5 md:left-20 top-1/2 -translate-y-1/2">
+          ELEGENCE <span className="text-white/60">CRAFTED</span>
         </h1>
       </section>
 

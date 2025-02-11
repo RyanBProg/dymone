@@ -53,12 +53,12 @@ export default function Cart() {
   }, [escFunction]);
 
   return (
-    <div>
+    <>
       <div className="relative flex bg-white/70 backdrop-blur-sm shadow rounded-lg p-1">
         <button
           ref={menuButtonRef}
           onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="hover:cursor-pointer hover:bg-white w-10 font-medium tracking-tighter flex justify-center rounded-md py-1 px-2 transition-colors">
+          className="relative hover:cursor-pointer hover:bg-white font-medium rounded-md px-2 transition-colors">
           {isMenuOpen ? (
             <X strokeWidth={1.5} size={20} />
           ) : (
@@ -69,11 +69,6 @@ export default function Cart() {
               </div>
             </>
           )}
-
-          {/* BAG
-          <div className="bg-white rounded-full text-xs h-6 w-6 ml-2 flex justify-center items-center">
-            0
-          </div> */}
         </button>
       </div>
       <div
@@ -121,6 +116,6 @@ export default function Cart() {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
