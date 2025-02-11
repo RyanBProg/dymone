@@ -1,7 +1,7 @@
 "use client";
 
+import { useMenuToggle } from "@/hooks/useMenuToggle";
 import { Minus, Plus, ShoppingBasket, X } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
 
 const cart = [
   { title: "Gold Watch", thumbnail: "", price: "79.99", qty: 1 },
@@ -9,48 +9,7 @@ const cart = [
 ];
 
 export default function Cart() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isMenuOpen &&
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
-        menuButtonRef.current &&
-        !menuButtonRef.current.contains(event.target as Node)
-      ) {
-        setIsMenuOpen(false);
-      }
-    };
-    const handleEscKeyPress = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isMenuOpen) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscKeyPress);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscKeyPress);
-    };
-  }, [isMenuOpen]);
-
-  const escFunction = useCallback((e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      setIsMenuOpen(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("keydown", escFunction);
-
-    return () => document.removeEventListener("keydown", escFunction);
-  }, [escFunction]);
+  const { isMenuOpen, setIsMenuOpen, menuButtonRef, menuRef } = useMenuToggle();
 
   return (
     <>
