@@ -36,9 +36,9 @@ export default function page() {
               <span className="text-xs underline underline-offset-2">Qty</span>
               <input
                 type="number"
-                id="last_name"
-                className="border border-gray-200 rounded-md block w-16 px-2 py-1"
-                placeholder="Doe"
+                id="item_qty"
+                className="border border-gray-400 rounded-md block w-16 px-2 py-1"
+                defaultValue={1}
                 required
               />
             </label>

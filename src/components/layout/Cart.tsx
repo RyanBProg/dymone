@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBasket, X } from "lucide-react";
+import { Minus, Plus, ShoppingBasket, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const cart = [
@@ -78,32 +78,48 @@ export default function Cart() {
       </div>
       <div
         ref={menuRef}
-        className={`absolute z-10 top-14 right-0 transition-all duration-300 bg-white/90 backdrop-blur-xs rounded-xl p-4 shadow ${
+        className={`absolute z-10 top-14 right-0 transition-all duration-300 bg-white/90 backdrop-blur-xs rounded-xl shadow ${
           isMenuOpen
             ? "opacity-100 -translate-x-2"
             : "opacity-0 translate-x-full"
         }`}>
-        <ul className="flex flex-col gap-2">
+        <div className="bg-white rounded-xl p-4 shadow">
+          <p className="tracking-tighter font-medium">CART</p>
+        </div>
+        <ul className="flex flex-col gap-4 p-4">
           {cart.map((cartItem) => (
             <li key={cartItem.title}>
               <div className="relative flex gap-4 w-[300px]">
                 <div className="h-16 w-16 bg-neutral-300 rounded-md"></div>
-                <div className="grid grid-rows-2 gap-1 grow">
-                  <span className="font-medium">{cartItem.title}</span>
-                  <div className="flex gap-4">
+                <div className="grow">
+                  <div className="flex">
+                    <span className="grow font-medium">{cartItem.title}</span>
                     <span>${cartItem.price}</span>
-                    <span className="justify-self-end">
-                      <span className="text-xs mr-0.5">Qty</span> {cartItem.qty}
-                    </span>
                   </div>
-                  <button className="hover:cursor-pointer absolute top-4 right-0 p-1 bg-red-200 rounded-full flex justify-center items-center">
-                    <X strokeWidth={1.5} size={20} />
-                  </button>
+                  <div className="flex mt-2">
+                    <div className="grow flex gap-2">
+                      <button className="hover:cursor-pointer p-1.5 bg-purple-100 rounded-md">
+                        <Minus strokeWidth={1.5} size={12} />
+                      </button>
+                      <div>{1}</div>
+                      <button className="hover:cursor-pointer p-1.5 bg-purple-200 rounded-md">
+                        <Plus strokeWidth={1.5} size={12} />
+                      </button>
+                    </div>
+                    <button className="hover:cursor-pointer py-1 px-2 text-sm bg-neutral-300 rounded-full">
+                      Remove
+                    </button>
+                  </div>
                 </div>
               </div>
             </li>
           ))}
         </ul>
+        <div className="bg-white rounded-xl p-4 shadow">
+          <button className="w-full tracking-tighter font-medium rounded-md bg-purple-200 px-2 py-1.5">
+            CHECKOUT
+          </button>
+        </div>
       </div>
     </div>
   );
