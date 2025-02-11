@@ -99,7 +99,7 @@ export default function NavMenu() {
               <Link
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="hover:cursor-pointer hover:bg-white font-medium tracking-tighter inline-block rounded-md py-1 px-2 min-w-max transition-colors">
+                className="hover:cursor-pointer hover:bg-white text-lg font-medium tracking-tighter inline-block rounded-md py-1.5 px-3 min-w-max transition-colors">
                 {link.name}
               </Link>
             </li>
