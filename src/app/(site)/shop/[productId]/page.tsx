@@ -8,14 +8,19 @@ const productImages = [
   { src: "/product.jpeg?height=1080&width=1920", alt: "Product 5" },
 ];
 
-export default function page() {
+type Props = {
+  params: Promise<{ productId: string }>;
+};
+
+export default async function page({ params }: Props) {
+  const { productId } = await params;
   return (
     <div>
       <section className="relative flex flex-col">
         <ProductGallery images={productImages} />
         <div className="m-2 md:m-0 md:absolute md:max-w-md md:right-2 md:bottom-2 grid gap-2">
           <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4">
-            <p className="font-bold text-lg">Product Title</p>
+            <p className="font-bold text-lg">Product Title {productId}</p>
             <p className="text-lg">$79.99</p>
             <p className="mt-2 text-neutral-600 text-sm">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
