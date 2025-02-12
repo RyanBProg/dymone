@@ -9,7 +9,12 @@ export default function GridProductCard() {
       <Link
         href="/shop/123"
         className="block relative h-[400px] w-full overflow-clip rounded-3xl">
-        <Image src="/product.jpeg" alt="product" fill objectFit="cover" />
+        <Image
+          src="/product.jpeg"
+          alt="product"
+          fill
+          className="object-cover"
+        />
         <div className="group absolute bottom-2 right-2 flex items-center gap-2">
           <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/60 px-2 rounded-md">
             Add to Cart
