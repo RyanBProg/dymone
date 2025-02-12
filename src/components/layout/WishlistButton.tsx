@@ -13,7 +13,7 @@ export default function WishlistButton() {
         <button
           ref={menuButtonRef}
           onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="relative hover:cursor-pointer hover:bg-white font-medium rounded-md px-2 transition-colors">
+          className="relative hover:cursor-pointer hover:bg-purple-100 rounded-md px-2 transition-colors duration-300">
           {isMenuOpen ? (
             <X strokeWidth={1.5} size={20} />
           ) : (
@@ -23,7 +23,7 @@ export default function WishlistButton() {
       </div>
       <div
         ref={menuRef}
-        className={`absolute z-10 top-14 right-0 transition-all duration-300 bg-white/90 backdrop-blur-xs rounded-lg p-4 shadow ${
+        className={`absolute z-10 bottom-0 translate-y-full right-0 transition-all duration-300 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow ${
           isMenuOpen
             ? "opacity-100 -translate-x-2"
             : "opacity-0 translate-x-full"
@@ -35,12 +35,12 @@ export default function WishlistButton() {
             </p>
             <div className="flex gap-2">
               <SignInButton mode="modal">
-                <button className="grow hover:cursor-pointer hover:bg-white font-medium tracking-tighter rounded-md py-1 px-2 transition-colors">
+                <button className="grow hover:cursor-pointer hover:bg-purple-100 font-medium tracking-tighter rounded-md py-1.5 px-2 transition-colors">
                   SIGN IN
                 </button>
               </SignInButton>
               <SignUpButton mode="modal">
-                <button className="grow hover:cursor-pointer hover:bg-white font-medium tracking-tighter rounded-md py-1 px-2 transition-colors">
+                <button className="grow hover:cursor-pointer hover:bg-purple-100 font-medium tracking-tighter rounded-md py-1.5 px-2 transition-colors">
                   SIGN UP
                 </button>
               </SignUpButton>

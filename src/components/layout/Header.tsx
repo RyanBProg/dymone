@@ -14,7 +14,7 @@ export default function Header() {
       <div className="flex bg-white/70 backdrop-blur-sm shadow rounded-lg p-1">
         <Link
           href="/"
-          className="hover:cursor-pointer hover:bg-white font-bold tracking-tighter inline-block rounded-md py-1 px-2 w-fit transition-colors">
+          className="hover:cursor-pointer hover:bg-purple-100 font-bold tracking-tighter inline-block rounded-md py-1.5 px-2 w-fit transition-colors duration-300">
           DYMONÉ
         </Link>
       </div>
