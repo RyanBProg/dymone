@@ -31,8 +31,8 @@ export default function ProductFilter() {
         </div>
       </div>
       <FilterModal
-        isOpen={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
+        isFilterOpen={isFilterOpen}
+        setIsFilterOpen={setIsFilterOpen}
       />
     </div>
   );

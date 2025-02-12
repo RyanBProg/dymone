@@ -1,13 +1,23 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { X } from "lucide-react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 interface FilterModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isFilterOpen: boolean;
+  setIsFilterOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
+export default function FilterModal({
+  isFilterOpen,
+  setIsFilterOpen,
+}: FilterModalProps) {
   const [priceRange, setPriceRange] = useState([0, 100]);
   const [selectedCategorie, setSelectedCategorie] = useState<string>("");
   const [selectedGender, setSelectedGender] = useState<string>("");
@@ -27,10 +37,10 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
   const escFunction = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        onClose();
+        setIsFilterOpen(false);
       }
     },
-    [onClose]
+    [setIsFilterOpen]
   );
 
   useEffect(() => {
@@ -42,40 +52,28 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
   return (
     <div
       className={`z-10 fixed inset-0 overflow-hidden transition-opacity duration-300 ${
-        isOpen
+        isFilterOpen
           ? "opacity-100 pointer-events-auto"
           : "opacity-0 pointer-events-none"
       }`}>
       <div
         className="absolute inset-0 bg-black/30 transition-opacity"
-        onClick={onClose}></div>
+        onClick={() => setIsFilterOpen(false)}></div>
+
       <aside
-        className={`fixed bottom-2 left-0 max-w-full flex transition-transform duration-300 ease-in-out transform ${
-          isOpen ? "translate-x-2" : "-translate-x-full"
+        className={`fixed bottom-2 left-0 max-w-full bg-white/90 backdrop-blur-sm rounded-lg transition-transform duration-300 transform ${
+          isFilterOpen ? "translate-x-2" : "-translate-x-full"
         }`}>
-        <div className="w-screen max-w-md flex flex-col gap-2">
-          <div className="bg-white/90 rounded-xl shadow p-4 flex justify-between">
-            <h2 className="text-lg font-medium text-gray-900">Filters</h2>
-            <button
-              type="button"
-              className="text-gray-400 hover:text-gray-500"
-              onClick={onClose}>
-              <span className="sr-only">Close panel</span>
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="bg-white/90 rounded-xl shadow p-4">
+        <div className="bg-white rounded-lg p-4 flex items-center justify-between">
+          <p className="tracking-tighter font-medium">FILTERS</p>
+          <button
+            onClick={() => setIsFilterOpen(false)}
+            className="relative hover:cursor-pointer hover:bg-purple-100 rounded-md px-2 transition-colors duration-300 inline-block py-1.5">
+            <X strokeWidth={1.5} size={20} />
+          </button>
+        </div>
+        <div className="flex flex-col gap-4 p-4">
+          <div className="p-4">
             <input
               type="range"
               min="0"
@@ -91,7 +89,7 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               <span>${priceRange[1]}</span>
             </div>
           </div>
-          <div className="bg-white/90 rounded-xl shadow p-4">
+          <div className="p-4">
             <h3 className="text-sm font-medium text-gray-900">Gender</h3>
             <div className="mt-2 flex gap-4">
               {gender.map((gender) => (
@@ -109,7 +107,7 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               ))}
             </div>
           </div>
-          <div className="bg-white/90 rounded-xl shadow p-4">
+          <div className=" p-4">
             <h3 className="text-sm font-medium text-gray-900">Categories</h3>
             <div className="mt-2 space-y-2 overflow-y-scroll max-h-30">
               {categories.map((category) => (
@@ -127,7 +125,7 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               ))}
             </div>
           </div>
-          <div className="bg-white/90 rounded-xl shadow p-4">
+          <div className="p-4">
             <h3 className="text-sm font-medium text-gray-900">Materials</h3>
             <div className="mt-2 space-y-2 overflow-y-scroll max-h-30">
               {materials.map((material) => (
@@ -145,20 +143,18 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               ))}
             </div>
           </div>
-          <div className="bg-white/90 rounded-xl shadow p-4 flex justify-end gap-4">
-            <button
-              type="button"
-              className="px-4 py-2 rounded-md text-sm font-medium text-gray-700 bg-white hover:cursor-pointer hover:bg-neutral-200 transition-colors"
-              onClick={onClose}>
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="px-4 py-2 rounded-md text-sm font-medium bg-purple-200 hover:bg-purple-300 hover:cursor-pointer transition-colors"
-              onClick={onClose}>
-              Apply Filters
-            </button>
-          </div>
+        </div>
+        <div className="bg-white/90 rounded-xl shadow p-4 flex justify-end gap-4">
+          <button
+            onClick={() => setIsFilterOpen(false)}
+            className="w-full tracking-tighter font-medium rounded-md bg-purple-100 px-2 py-1.5 hover:cursor-pointer hover:bg-purple-200 transition-colors duration-300">
+            CANCEL
+          </button>
+          <button
+            onClick={() => setIsFilterOpen(false)}
+            className="w-full tracking-tighter font-medium rounded-md bg-purple-200 px-2 py-1.5 hover:cursor-pointer hover:bg-purple-100 transition-colors duration-300">
+            APPLY
+          </button>
         </div>
       </aside>
     </div>
