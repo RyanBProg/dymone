@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  title: {
+    default: "Dymoné",
+    template: "%s | Dymoné",
+  },
+  description: "Dymoné Luxury Jewellery",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

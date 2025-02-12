@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Studio | Dymoné",
-  description: "Manage studio",
+  title: "Studio",
 };
 
 export default function RootLayout({
