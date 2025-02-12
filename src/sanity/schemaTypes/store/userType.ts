@@ -20,7 +20,7 @@ export const userType = defineType({
     defineField({
       name: "email",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().email(),
     }),
     defineField({
       name: "address",

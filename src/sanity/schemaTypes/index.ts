@@ -11,6 +11,7 @@ import { productImageType } from "./store/productImageType";
 import { orderType } from "./store/orderType";
 import { orderItemType } from "./store/orderItemType";
 import { userType } from "./store/userType";
+import { productCategoryType } from "./store/productCategoryType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -20,7 +21,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     postType,
     authorType,
     // Store schemas
-    categoryType,
+    productCategoryType,
     materialType,
     orderItemType,
     orderType,

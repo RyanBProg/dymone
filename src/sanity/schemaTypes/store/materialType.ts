@@ -13,6 +13,11 @@ export const materialType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "description",
+      type: "text",
+      title: "Description",
+    }),
+    defineField({
       name: "slug",
       type: "slug",
       options: {

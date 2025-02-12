@@ -57,9 +57,9 @@ export const productType = defineType({
       validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
-      name: "category",
+      name: "productCategory",
       type: "reference",
-      to: [{ type: "jewelleryCategory" }],
+      to: [{ type: "productCategory" }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -71,7 +71,7 @@ export const productType = defineType({
     defineField({
       name: "stock",
       type: "number",
-      validation: (Rule) => Rule.required().min(0),
+      validation: (Rule) => Rule.required().positive().min(0),
     }),
     defineField({
       name: "gender",

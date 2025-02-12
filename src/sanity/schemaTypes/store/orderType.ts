@@ -26,6 +26,7 @@ export const orderType = defineType({
     defineField({
       name: "total",
       type: "number",
+      validation: (Rule) => Rule.required().positive(),
     }),
     defineField({
       name: "status",

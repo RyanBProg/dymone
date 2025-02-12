@@ -18,6 +18,9 @@ export const productImageType = defineType({
       type: "image",
       options: {
         hotspot: true,
+        metadata: ["blurhash", "lqip"],
+        storeOriginalFilename: true,
+        accept: "image/jpeg,image/png",
       },
       validation: (Rule) => Rule.required(),
     }),
