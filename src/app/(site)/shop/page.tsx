@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ProductFilter from "@/components/products/ProductFilter";
+import ProductToolbar from "@/components/products/ProductToolbar";
 import ProductGrid from "@/components/products/ProductGrid";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default async function Home({ searchParams }: Props) {
 
   return (
     <main className="my-20">
-      <ProductFilter />
+      <ProductToolbar />
       <ProductGrid />
     </main>
   );

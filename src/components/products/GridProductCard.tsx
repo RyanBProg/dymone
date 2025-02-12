@@ -5,7 +5,7 @@ import React from "react";
 
 export default function GridProductCard() {
   return (
-    <div>
+    <article>
       <Link
         href="/shop/123"
         className="block relative h-[400px] w-full overflow-clip rounded-3xl">
@@ -31,6 +31,6 @@ export default function GridProductCard() {
           <span className="font-light line-through text-xs">$79.99</span>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
