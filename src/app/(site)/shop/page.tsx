@@ -18,6 +18,8 @@ type Props = {
 export default async function Home({ searchParams }: Props) {
   const { filter = "", sort = "" } = await searchParams;
   // TODO: use filter and sort params to sort & filter product list
+  console.log(filter);
+  console.log(sort);
 
   return (
     <main className="my-20">
