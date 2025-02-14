@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SanityLive } from "@/sanity/lib/live";
 
 export const metadata: Metadata = {
   title: {
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col bg-neutral-100 min-h-screen p-safe`}>
         {children}
+        <SanityLive />
       </body>
     </html>
   );

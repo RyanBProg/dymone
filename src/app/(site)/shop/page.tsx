@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ProductToolbar from "@/components/products/ProductToolbar";
+import ProductToolbar from "@/components/products/toolbar/ProductToolbar";
 import ProductGrid from "@/components/products/ProductGrid";
 
 export const metadata: Metadata = {
@@ -7,24 +7,31 @@ export const metadata: Metadata = {
 };
 
 type SearchParams = {
-  filter?: string;
+  filters?: string | string[];
+  categories?: string[];
+  materials?: string[];
+  genders?: string[];
+  minPrice?: string;
+  maxPrice?: string;
   sort?: string;
+  query?: string;
 };
 
-type Props = {
-  searchParams: Promise<SearchParams>;
-};
-
-export default async function Home({ searchParams }: Props) {
-  const { filter = "", sort = "" } = await searchParams;
-  // TODO: use filter and sort params to sort & filter product list
-  console.log(filter);
-  console.log(sort);
-
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: URLSearchParams;
+}) {
   return (
     <main className="my-20">
       <ProductToolbar />
       <ProductGrid />
+      {/* <ProductGrid 
+        filters={currentFilters}
+        sort={sort}
+        query={query}
+        priceRange={minPrice && maxPrice ? [Number(minPrice), Number(maxPrice)] : undefined}
+      /> */}
     </main>
   );
 }
