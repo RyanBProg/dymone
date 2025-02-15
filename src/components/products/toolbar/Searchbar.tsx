@@ -23,7 +23,7 @@ export default function Searchbar() {
     const params = new URLSearchParams(searchParams);
     if (search && action === "submit") {
       params.set("search", search);
-      // delete current filters
+      // TODO: delete current filters
     } else {
       setSearch("");
       params.delete("search");

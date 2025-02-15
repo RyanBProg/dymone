@@ -6,12 +6,12 @@ import { CATEGORIES_QUERY, MATERIALS_QUERY } from "@/lib/sanityQueries";
 import Searchbar from "./Searchbar";
 
 export default async function ProductToolbar() {
-  // grab the categories avaliable based on the current url params
+  // TODO: grab the categories avaliable based on the current url params
   const { data: categories } = (await sanityFetch({
     query: CATEGORIES_QUERY,
   })) as { data: ProductCategory[] };
 
-  // grab the materials avaliable based on the current url params
+  // TODO: grab the materials avaliable based on the current url params
   const { data: materials } = (await sanityFetch({
     query: MATERIALS_QUERY,
   })) as { data: ProductMaterials[] };

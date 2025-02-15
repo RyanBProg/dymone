@@ -11,13 +11,16 @@ type Props = {
 };
 
 export default function ProductFilterModal({ categories, materials }: Props) {
-  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const genderOptions = ["male", "female", "unisex"];
+
+  const MAX_PRICE = 1000; // <- get this from sanity
+  // TODO: add useEffect to setPriceRange to MAX_PRICE from sanity
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -185,22 +188,75 @@ export default function ProductFilterModal({ categories, materials }: Props) {
           <div className="flex flex-col gap-4 p-4">
             {/* price slider */}
             <div className="p-4">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={priceRange[1]}
-                onChange={(e) =>
-                  setPriceRange([
-                    priceRange[0],
-                    Number.parseInt(e.target.value),
-                  ])
-                }
-                className="w-full hover:cursor-pointer"
-              />
-              <div className="flex justify-between text-sm text-gray-500">
-                <span>${priceRange[0]}</span>
-                <span>${priceRange[1]}</span>
+              <h3 className="text-sm font-medium text-gray-900 mb-3">
+                Price Range
+              </h3>
+              <div className="relative">
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="absolute h-2 bg-purple-200 rounded-full"
+                    style={{
+                      left: `${(priceRange[0] / 1000) * 100}%`,
+                      right: `${100 - (priceRange[1] / 1000) * 100}%`,
+                    }}
+                  />
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max={MAX_PRICE}
+                  value={priceRange[0]}
+                  onChange={(e) =>
+                    setPriceRange([
+                      Math.min(Number(e.target.value), priceRange[1] - 10),
+                      priceRange[1],
+                    ])
+                  }
+                  className="absolute w-full -top-1 h-4 appearance-none bg-transparent pointer-events-none"
+                />
+                <input
+                  type="range"
+                  min="0"
+                  max={MAX_PRICE}
+                  value={priceRange[1]}
+                  onChange={(e) =>
+                    setPriceRange([
+                      priceRange[0],
+                      Math.max(Number(e.target.value), priceRange[0] + 10),
+                    ])
+                  }
+                  className="absolute w-full -top-1 h-4 appearance-none bg-transparent pointer-events-none"
+                />
+              </div>
+              <div className="flex justify-between items-center mt-3">
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm text-gray-500">Min</span>
+                  <input
+                    type="number"
+                    value={priceRange[0]}
+                    onChange={(e) =>
+                      setPriceRange([
+                        Math.min(Number(e.target.value), priceRange[1] - 10),
+                        priceRange[1],
+                      ])
+                    }
+                    className="w-24 p-1 text-sm rounded-sm border border-neutral-400 bg-white shadow"
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm text-gray-500">Max</span>
+                  <input
+                    type="number"
+                    value={priceRange[1]}
+                    onChange={(e) =>
+                      setPriceRange([
+                        priceRange[0],
+                        Math.max(Number(e.target.value), priceRange[0] + 10),
+                      ])
+                    }
+                    className="w-24 p-1 text-sm rounded-sm border border-neutral-400 bg-white shadow"
+                  />
+                </div>
               </div>
             </div>
 
