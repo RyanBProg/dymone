@@ -8,3 +8,51 @@
     padding-right: env(safe-area-inset-right);
   }
 }
+
+input[type="range"]::-webkit-slider-thumb {
+  @apply h-4 w-4 rounded-full bg-white border-2 border-purple-300 pointer-events-auto;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  @apply h-4 w-4 rounded-full bg-white border-2 border-purple-300 pointer-events-auto;
+  -moz-appearance: none;
+}
+
+input[type="checkbox"] {
+  accent-color: rgb(216 180 254);
+}
+
+input[type="checkbox"] {
+  @apply shadow bg-white border border-neutral-400 rounded-sm flex justify-center items-center;
+  appearance: none;
+  -webkit-appearance: none;
+  font-size: 2rem;
+  padding: 0.1rem;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  clip-path: polygon(
+    20% 0%,
+    0% 20%,
+    30% 50%,
+    0% 80%,
+    20% 100%,
+    50% 70%,
+    80% 100%,
+    100% 80%,
+    70% 50%,
+    100% 20%,
+    80% 0%,
+    50% 30%
+  );
+  transform: scale(0);
+  background-color: rgb(216 180 254);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
