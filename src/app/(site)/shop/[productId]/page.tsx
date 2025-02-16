@@ -1,12 +1,7 @@
 import { Plus } from "lucide-react";
 import ProductGallery from "@/components/products/ProductGallery";
-const productImages = [
-  { src: "/product.jpeg?height=1080&width=1920", alt: "Product 1" },
-  { src: "/product.jpeg?height=1080&width=1920", alt: "Product 2" },
-  { src: "/product.jpeg?height=1080&width=1920", alt: "Product 3" },
-  { src: "/product.jpeg?height=1080&width=1920", alt: "Product 4" },
-  { src: "/product.jpeg?height=1080&width=1920", alt: "Product 5" },
-];
+import { sanityFetch } from "@/sanity/lib/live";
+import { Product } from "../../../../../sanity.types";
 
 type Props = {
   params: Promise<{ productId: string }>;
@@ -14,14 +9,27 @@ type Props = {
 
 export default async function page({ params }: Props) {
   const { productId } = await params;
+  const { data: product } = (await sanityFetch({
+    query: `*[_type == "product" && _id == "${productId}"][0]`,
+  })) as { data: Product };
+
   return (
     <div>
       <section className="relative flex flex-col">
-        <ProductGallery images={productImages} />
+        <ProductGallery images={product.images} />
         <div className="m-2 md:m-0 md:absolute md:max-w-md md:right-2 md:bottom-2 grid gap-2">
           <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4">
-            <p className="font-bold text-lg">Product Title {productId}</p>
-            <p className="text-lg">$79.99</p>
+            <p className="font-bold text-lg">{product.name}</p>
+            <div className="flex gap-1 items-center">
+              <span className="font-light">
+                ${product.discountPrice ? product.discountPrice : product.price}
+              </span>
+              {product.discountPrice && (
+                <span className="font-light line-through text-xs">
+                  ${product.price}
+                </span>
+              )}
+            </div>
             <p className="mt-2 text-neutral-600 text-sm">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
               voluptates reiciendis debitis. Quaerat, sed animi soluta,

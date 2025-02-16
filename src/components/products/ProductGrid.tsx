@@ -1,18 +1,21 @@
 import React from "react";
 import GridProductCard from "./GridProductCard";
+import { PRODUCTGRID_QUERYResult } from "../../../sanity.types";
 
-export default function ProductGrid() {
+type Props = {
+  products: PRODUCTGRID_QUERYResult;
+};
+
+export default async function ProductGrid({ products }: Props) {
+  if (products.length < 1 || !products) {
+    return <>No Products</>;
+  }
+
   return (
     <div className="px-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-      <GridProductCard />
-      <GridProductCard />
-      <GridProductCard />
-      <GridProductCard />
-      <GridProductCard />
-      <GridProductCard />
-      <GridProductCard />
-      <GridProductCard />
-      <GridProductCard />
+      {products.map((product) => {
+        return <GridProductCard key={product._id} product={product} />;
+      })}
     </div>
   );
 }

@@ -509,6 +509,14 @@ export type MATERIALS_QUERYResult = Array<{
   description: string | null;
   slug: string | null;
 }>;
+// Variable: STONES_QUERY
+// Query: *[_type == "stone"] {    _id,    name,    description,    "slug": slug.current  } | order(name asc)
+export type STONES_QUERYResult = Array<{
+  _id: string;
+  name: string | null;
+  description: string | null;
+  slug: string | null;
+}>;
 // Variable: PRODUCTGRID_QUERY
 // Query: *[_type == "product"] {    _id,    name,    price,    discountPrice,    "image": images[0],    "slug": slug.current  } | order(name asc)
 export type PRODUCTGRID_QUERYResult = Array<{
@@ -538,6 +546,7 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "\n  *[_type == \"productCategory\"] {\n    _id,\n    name,\n    \"slug\": slug.current\n  } | order(name asc)\n": CATEGORIES_QUERYResult;
     "\n  *[_type == \"material\"] {\n    _id,\n    name,\n    description,\n    \"slug\": slug.current\n  } | order(name asc)\n": MATERIALS_QUERYResult;
+    "\n  *[_type == \"stone\"] {\n    _id,\n    name,\n    description,\n    \"slug\": slug.current\n  } | order(name asc)\n": STONES_QUERYResult;
     "\n  *[_type == \"product\"] {\n    _id,\n    name,\n    price,\n    discountPrice,\n    \"image\": images[0],\n    \"slug\": slug.current\n  } | order(name asc)\n": PRODUCTGRID_QUERYResult;
   }
 }

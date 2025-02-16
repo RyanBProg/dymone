@@ -1,23 +1,33 @@
 "use client";
 
-import { ProductCategory, ProductMaterials } from "@/lib/types";
 import { Filter, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import {
+  CATEGORIES_QUERYResult,
+  MATERIALS_QUERYResult,
+  STONES_QUERYResult,
+} from "../../../../sanity.types";
 
 type Props = {
-  categories: ProductCategory[];
-  materials: ProductMaterials[];
+  categories: CATEGORIES_QUERYResult;
+  materials: MATERIALS_QUERYResult;
+  stones: STONES_QUERYResult;
 };
 
-export default function ProductFilterModal({ categories, materials }: Props) {
+export default function ProductFilterModal({
+  categories,
+  materials,
+  stones,
+}: Props) {
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  const [selectedStones, setSelectedStones] = useState<string[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const genderOptions = ["male", "female", "unisex"];
+  const genderOptions = ["Male", "Female", "Unisex"];
 
   const MAX_PRICE = 1000; // <- get this from sanity
   // TODO: add useEffect to setPriceRange to MAX_PRICE from sanity
@@ -29,6 +39,7 @@ export default function ProductFilterModal({ categories, materials }: Props) {
   const currentGenders = searchParams.get("gender");
   const currentCategories = searchParams.get("category");
   const currentMaterials = searchParams.get("material");
+  const currentStones = searchParams.get("stone");
   const currentMinPrice = searchParams.get("minprice");
   const currentMaxPrice = searchParams.get("maxprice");
 
@@ -43,16 +54,20 @@ export default function ProductFilterModal({ categories, materials }: Props) {
     if (currentMaterials) {
       setSelectedMaterials(currentMaterials.split(","));
     }
+    if (currentStones) {
+      setSelectedStones(currentStones.split(","));
+    }
     if (currentMinPrice || currentMaxPrice) {
       setPriceRange([
         Number(currentMinPrice || 0),
-        Number(currentMaxPrice || 100),
+        Number(currentMaxPrice || MAX_PRICE),
       ]);
     }
   }, [
     currentGenders,
     currentCategories,
     currentMaterials,
+    currentStones,
     currentMinPrice,
     currentMaxPrice,
   ]);
@@ -83,6 +98,9 @@ export default function ProductFilterModal({ categories, materials }: Props) {
     if (currentMaterials) {
       params.delete("material");
     }
+    if (currentStones) {
+      params.delete("stone");
+    }
     if (currentMinPrice) {
       params.delete("minprice");
     }
@@ -94,7 +112,8 @@ export default function ProductFilterModal({ categories, materials }: Props) {
     setSelectedCategories([]);
     setSelectedGenders([]);
     setSelectedMaterials([]);
-    setPriceRange([0, 100]);
+    setSelectedStones([]);
+    setPriceRange([0, MAX_PRICE]);
     setIsFilterOpen(false);
   };
 
@@ -119,19 +138,21 @@ export default function ProductFilterModal({ categories, materials }: Props) {
     } else {
       params.delete("gender");
     }
-
     if (selectedCategories.length >= 1) {
       params.set("category", selectedCategories.join(","));
     } else {
       params.delete("category");
     }
-
     if (selectedMaterials.length >= 1) {
       params.set("material", selectedMaterials.join(","));
     } else {
       params.delete("material");
     }
-
+    if (selectedStones.length >= 1) {
+      params.set("stone", selectedStones.join(","));
+    } else {
+      params.delete("stone");
+    }
     if (priceRange[0] !== 0) {
       params.set("minprice", priceRange[0].toString());
     } else {
@@ -175,7 +196,7 @@ export default function ProductFilterModal({ categories, materials }: Props) {
             isFilterOpen ? "translate-x-2" : "-translate-x-full"
           }`}>
           {/* title */}
-          <div className="bg-white rounded-lg p-4 flex items-center justify-between">
+          <div className="bg-white rounded-lg p-2 sm:p-4 flex items-center justify-between">
             <p className="tracking-tighter font-medium">FILTERS</p>
             <button
               onClick={() => setIsFilterOpen(false)}
@@ -185,9 +206,9 @@ export default function ProductFilterModal({ categories, materials }: Props) {
           </div>
 
           {/* filters */}
-          <div className="flex flex-col gap-4 p-4">
+          <div className="flex flex-col gap-4 sm:gap-8 p-2 sm:p-6">
             {/* price slider */}
-            <div className="p-4">
+            <div>
               <h3 className="text-sm font-medium text-gray-900 mb-3">
                 Price Range
               </h3>
@@ -261,7 +282,7 @@ export default function ProductFilterModal({ categories, materials }: Props) {
             </div>
 
             {/* gender */}
-            <div className="p-4">
+            <div>
               <h3 className="text-sm font-medium text-gray-900">Gender</h3>
               <div className="mt-2 flex gap-4">
                 {genderOptions.map((gender) => (
@@ -288,20 +309,20 @@ export default function ProductFilterModal({ categories, materials }: Props) {
             </div>
 
             {/* categories */}
-            <div className=" p-4">
+            <div>
               <h3 className="text-sm font-medium text-gray-900">Categories</h3>
-              <div className="mt-2 space-y-2 overflow-y-scroll max-h-30">
+              <div className="mt-2 space-y-2 overflow-y-scroll h-16 sm:h-24">
                 {categories.map((category) => (
                   <label
                     key={category._id}
                     className="flex items-center w-fit hover:cursor-pointer">
                     <input
                       type="checkbox"
-                      value={category.name}
-                      checked={selectedCategories.includes(category.name)}
+                      value={category.name!}
+                      checked={selectedCategories.includes(category.name!)}
                       onChange={() =>
                         handleCheckboxChange(
-                          category.name,
+                          category.name!,
                           selectedCategories,
                           setSelectedCategories
                         )
@@ -317,20 +338,20 @@ export default function ProductFilterModal({ categories, materials }: Props) {
             </div>
 
             {/* materials */}
-            <div className="p-4">
+            <div>
               <h3 className="text-sm font-medium text-gray-900">Materials</h3>
-              <div className="mt-2 space-y-2 overflow-y-scroll max-h-30">
+              <div className="mt-2 space-y-2 overflow-y-scroll h-16 sm:h-24">
                 {materials.map((material) => (
                   <label
                     key={material._id}
                     className="flex items-center w-fit hover:cursor-pointer">
                     <input
                       type="checkbox"
-                      value={material.name}
-                      checked={selectedMaterials.includes(material.name)}
+                      value={material.name!}
+                      checked={selectedMaterials.includes(material.name!)}
                       onChange={() =>
                         handleCheckboxChange(
-                          material.name,
+                          material.name!,
                           selectedMaterials,
                           setSelectedMaterials
                         )
@@ -344,10 +365,39 @@ export default function ProductFilterModal({ categories, materials }: Props) {
                 ))}
               </div>
             </div>
+
+            {/* stones */}
+            <div>
+              <h3 className="text-sm font-medium text-gray-900">Stones</h3>
+              <div className="mt-2 space-y-2 overflow-y-scroll h-16 sm:h-24">
+                {stones.map((stone) => (
+                  <label
+                    key={stone._id}
+                    className="flex items-center w-fit hover:cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value={stone.name!}
+                      checked={selectedStones.includes(stone.name!)}
+                      onChange={() =>
+                        handleCheckboxChange(
+                          stone.name!,
+                          selectedStones,
+                          setSelectedStones
+                        )
+                      }
+                      className="h-4 w-4 hover:cursor-pointer"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">
+                      {stone.name}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* form buttons */}
-          <div className="bg-white/90 rounded-xl shadow p-4 flex justify-end gap-4">
+          <div className="bg-white/90 rounded-xl shadow p-2 sm:p-4 flex justify-end gap-4">
             <button
               type="button"
               onClick={clearFilters}

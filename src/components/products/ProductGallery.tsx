@@ -3,28 +3,25 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { urlFor } from "@/sanity/lib/image";
+import { Product } from "../../../sanity.types";
 
-interface ProductImage {
-  src: string;
-  alt: string;
-}
+type Props = {
+  images: Product["images"];
+};
 
-interface ProductGalleryProps {
-  images: ProductImage[];
-}
-
-export default function ProductGallery({ images }: ProductGalleryProps) {
+export default function ProductGallery({ images }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images!.length);
   };
 
   const prevSlide = () => {
     setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+      (prevIndex) => (prevIndex - 1 + images!.length) % images!.length
     );
   };
 
@@ -43,14 +40,14 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
       <div
         ref={carouselRef}
         className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide">
-        {images.map((image, index) => (
+        {images!.map((image, index) => (
           <div
             key={index}
             ref={photoRef}
             className="relative w-full max-w-4xl h-full flex-shrink-0 snap-start">
             <Image
-              src={image.src || "/placeholder.svg"}
-              alt={image.alt}
+              src={urlFor(image)?.url()}
+              alt={""}
               fill
               className="object-cover"
               sizes="100vw"
@@ -74,7 +71,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
         </button>
         {/* Image counter */}
         <div className=" bg-white/60 backdrop-blur-sm shadow px-2 py-1 rounded-full text-sm">
-          {currentIndex + 1} / {images.length}
+          {currentIndex + 1} / {images!.length}
         </div>
       </div>
     </div>
