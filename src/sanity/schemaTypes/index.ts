@@ -6,6 +6,7 @@ import { postType } from "./blog/postType";
 import { authorType } from "./blog/authorType";
 import { productType } from "./store/productType";
 import { materialType } from "./store/materialType";
+import { stoneType } from "./store/stoneType";
 import { wishlistType } from "./store/wishlistType";
 import { productImageType } from "./store/productImageType";
 import { orderType } from "./store/orderType";
@@ -23,6 +24,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     // Store schemas
     productCategoryType,
     materialType,
+    stoneType,
     orderItemType,
     orderType,
     productImageType,

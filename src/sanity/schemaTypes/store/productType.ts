@@ -69,6 +69,18 @@ export const productType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "stones",
+      title: "Stones",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "stone" }],
+        },
+      ],
+      validation: (Rule) => Rule.unique(),
+    }),
+    defineField({
       name: "stock",
       type: "number",
       validation: (Rule) => Rule.required().positive().min(0),
