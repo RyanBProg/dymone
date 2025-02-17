@@ -87,12 +87,11 @@ export function productQueryBuilder(
   if (filters.length) {
     sanityQuery += ` && (${filters.join(" && ")})`;
   }
-
-  let sortQuery = "_updatedAt desc"; // Default sort
+  let sortQuery = "_createdAt desc"; // Default sort
   if (params.sort) {
     switch (params.sort) {
       case "new":
-        sortQuery = `_updatedAt desc`;
+        sortQuery = `_createdAt desc`;
         break;
       case "pricedes":
         sortQuery = `price desc`;
@@ -103,6 +102,12 @@ export function productQueryBuilder(
     }
   }
 
+  // pagination
+  const page = parseInt(params.page || "1");
+  const limit = 12;
+  const start = (page - 1) * limit;
+  const end = start + limit;
+
   sanityQuery += `] {
     _id,
     name,
@@ -110,7 +115,7 @@ export function productQueryBuilder(
     discountPrice,
     "image": images[0].asset->url,
     "slug": slug.current
-  } | order(${sortQuery}) [0...12]`;
+  } | order(${sortQuery}) [${start}...${end}]`;
 
   return sanityQuery;
 }
