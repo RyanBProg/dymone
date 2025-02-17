@@ -12,7 +12,7 @@ export default async function ProductGrid({ products }: Props) {
   }
 
   return (
-    <div className="px-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+    <div className="px-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
       {products.map((product) => {
         return <GridProductCard key={product._id} product={product} />;
       })}

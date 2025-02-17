@@ -13,8 +13,9 @@ import {
   CATEGORIES_QUERY,
   MATERIALS_QUERY,
   STONES_QUERY,
-} from "@/lib/sanityQueries";
-import { productQueryBuilder } from "@/lib/utils/ProductQueryBuilder";
+} from "@/lib/utils/sanity/sanityQueries";
+import { productQueryBuilder } from "@/lib/utils/sanity/productQueryBuilder";
+import { filterCountQueryBuilder } from "@/lib/utils/sanity/filterCountQueryBuilder";
 
 export const metadata: Metadata = {
   title: "Store",
@@ -38,6 +39,14 @@ export default async function Home({ searchParams }: Props) {
   // on filter, sort or search change the ui is "reset" (the previous list is now removed) and a new 0-20 product list is fetched
 
   // all avaliable filters and product counts are to remain updated
+
+  // Fetch filter counts
+  const filterCountsQuery = filterCountQueryBuilder(params);
+  const { data: filterCounts } = await sanityFetch({
+    query: filterCountsQuery,
+  });
+
+  console.log(filterCounts);
 
   const { data: categories } = (await sanityFetch({
     query: CATEGORIES_QUERY,

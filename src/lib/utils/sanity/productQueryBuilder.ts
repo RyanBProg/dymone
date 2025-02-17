@@ -2,28 +2,9 @@ import {
   CATEGORIES_QUERYResult,
   MATERIALS_QUERYResult,
   STONES_QUERYResult,
-} from "../../../sanity.types";
-import { ProductURLParams } from "../types";
-
-// Helper function to sanitize input and create a GROQ-safe string
-function groqSafeString(input: string): string {
-  if (!input) return "";
-
-  // Escape special characters
-  let escapedString = input
-    .replace(/\\/g, "\\\\") // Escape backslashes
-    .replace(/"/g, '\\"'); // Escape double quotes
-
-  // Limit to a set of allowed characters
-  const allowedCharacters = /^[a-zA-Z0-9\s\-&]*$/; // Allow alphanumeric, spaces, hyphens, and ampersands
-  if (!allowedCharacters.test(escapedString)) {
-    // If the string contains disallowed characters, return an empty string or a safe default
-    console.warn("Input contains disallowed characters:", input);
-    return ""; // Or return a safe default, like "invalid"
-  }
-
-  return escapedString;
-}
+} from "../../../../sanity.types";
+import { ProductURLParams } from "../../types";
+import { groqSafeString } from "./groqSafeString";
 
 // Helper function to build a filter for category, material, or stone
 function buildFilter(
@@ -90,7 +71,7 @@ export function productQueryBuilder(
   }
 
   // Stone filtering
-  const stoneFilter = buildFilter(params.stone, stones, "stones");
+  const stoneFilter = buildFilter(params.stone, stones, "stone");
   if (stoneFilter) {
     filters.push(stoneFilter);
   }
@@ -129,7 +110,7 @@ export function productQueryBuilder(
     discountPrice,
     "image": images[0].asset->url,
     "slug": slug.current
-  } | order(${sortQuery}) [0...5]`;
+  } | order(${sortQuery}) [0...12]`;
 
   return sanityQuery;
 }
