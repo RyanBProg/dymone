@@ -4,7 +4,7 @@ import Cart from "./Cart";
 import AccountButton from "./AccountButton";
 import WishlistButton from "./WishlistButton";
 
-export default function Header() {
+export default async function Header() {
   return (
     <header className="fixed z-10 flex justify-between p-2 w-full">
       {/* Nav */}

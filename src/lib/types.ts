@@ -31,4 +31,6 @@ export type ProductURLParams = {
   stone?: string;
   category?: string;
   material?: string;
+  page?: string;
+  limit?: string;
 };

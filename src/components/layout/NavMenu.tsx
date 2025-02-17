@@ -3,19 +3,16 @@
 import { useMenuToggle } from "@/hooks/useMenuToggle";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { name: "SHOP", href: "/shop" },
-  { name: "NEW IN", href: "shop" },
-  { name: "WOMANS", href: "/shop" },
-  { name: "MENS", href: "/shop" },
-  { name: "SALE", href: "/shop" },
+  { name: "SHOP", href: "/shop?sort=pricedes" },
+  { name: "NEW IN", href: "/shop?sort=new" },
+  { name: "WOMANS", href: "/shop?gender=Female" },
+  { name: "MENS", href: "/shop?gender=Male" },
 ];
 
 export default function NavMenu() {
   const { isMenuOpen, setIsMenuOpen, menuButtonRef, menuRef } = useMenuToggle();
-  const pathName = usePathname();
 
   return (
     <nav className="flex">
@@ -38,7 +35,7 @@ export default function NavMenu() {
             <li key={link.name}>
               <Link
                 href={link.href}
-                className={`${pathName === link.href ? "font-bold bg-white" : "font-medium"}  inline-block tracking-tighter rounded-md py-1.5 px-2 transition-colors duration-300 hover:cursor-pointer hover:bg-purple-100`}>
+                className="font-medium inline-block tracking-tighter rounded-md py-1.5 px-2 transition-colors duration-300 hover:cursor-pointer hover:bg-purple-100">
                 {link.name}
               </Link>
             </li>
@@ -60,7 +57,7 @@ export default function NavMenu() {
               <Link
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className={`${pathName === link.href ? "font-bold bg-white" : "font-medium"}  inline-block tracking-tighter rounded-md py-1.5 px-2 transition-colors hover:cursor-pointer duration-300 hover:bg-purple-100`}>
+                className="font-medium inline-block tracking-tighter rounded-md py-1.5 px-2 transition-colors hover:cursor-pointer duration-300 hover:bg-purple-100">
                 {link.name}
               </Link>
             </li>
