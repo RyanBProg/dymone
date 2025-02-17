@@ -27,6 +27,18 @@ type Props = {
 export default async function Home({ searchParams }: Props) {
   const params = await searchParams;
 
+  // look at all of the products and get the following based on the returned products:
+  // avaliable categories & count
+  // avaliable materials & count
+  // avaliable stones & count
+
+  // get 20 products based on default or current filters, sort and search values
+  // on scroll fetch the next 20 products when the user nears the bottom of the screen
+
+  // on filter, sort or search change the ui is "reset" (the previous list is now removed) and a new 0-20 product list is fetched
+
+  // all avaliable filters and product counts are to remain updated
+
   const { data: categories } = (await sanityFetch({
     query: CATEGORIES_QUERY,
   })) as { data: CATEGORIES_QUERYResult };
@@ -52,7 +64,11 @@ export default async function Home({ searchParams }: Props) {
 
   return (
     <main className="my-20">
-      <ProductToolbar />
+      <ProductToolbar
+        categories={categories}
+        materials={materials}
+        stones={stones}
+      />
       <ProductGrid products={products} />
     </main>
   );

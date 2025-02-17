@@ -5,11 +5,49 @@ import {
 } from "../../../sanity.types";
 import { ProductURLParams } from "../types";
 
-function multiQuerySplit(query: string) {
-  if (query.includes(",")) {
-    const queries = query.split(",");
-    return `${queries.map((query) => `"${query}"`).join(",")}`;
-  } else return `"${query}"`;
+// Helper function to sanitize input and create a GROQ-safe string
+function groqSafeString(input: string): string {
+  if (!input) return "";
+
+  // Escape special characters
+  let escapedString = input
+    .replace(/\\/g, "\\\\") // Escape backslashes
+    .replace(/"/g, '\\"'); // Escape double quotes
+
+  // Limit to a set of allowed characters
+  const allowedCharacters = /^[a-zA-Z0-9\s\-&]*$/; // Allow alphanumeric, spaces, hyphens, and ampersands
+  if (!allowedCharacters.test(escapedString)) {
+    // If the string contains disallowed characters, return an empty string or a safe default
+    console.warn("Input contains disallowed characters:", input);
+    return ""; // Or return a safe default, like "invalid"
+  }
+
+  return escapedString;
+}
+
+// Helper function to build a filter for category, material, or stone
+function buildFilter(
+  paramValue: string | undefined,
+  items: any[],
+  fieldName: string
+): string {
+  if (!paramValue) {
+    return "";
+  }
+
+  const queryValues = paramValue.split(",").map((v) => v.trim().toLowerCase());
+
+  const validIds = items
+    .filter((item) => queryValues.includes(item.name?.toLowerCase()))
+    .map((item) => item._id);
+
+  if (validIds.length === 0) {
+    return ""; // No valid IDs found, so don't add a filter
+  }
+
+  return `${fieldName}._ref in [${validIds
+    .map((id) => `"${groqSafeString(id)}"`)
+    .join(",")}]`;
 }
 
 export function productQueryBuilder(
@@ -17,113 +55,47 @@ export function productQueryBuilder(
   categories: CATEGORIES_QUERYResult,
   materials: MATERIALS_QUERYResult,
   stones: STONES_QUERYResult
-) {
+): string {
   let sanityQuery = `*[_type == "product"`;
+  const filters: string[] = [];
 
-  // sorting
-  let sortQuery = "";
-  if (params.sort) {
-    switch (params.sort) {
-      case "new":
-        sortQuery = `_updatedAt desc`;
-        break;
-      case "pricedes":
-        sortQuery = `price desc`;
-        break;
-      case "priceasc":
-        sortQuery = `price asc`;
-        break;
-      default:
-        sortQuery = `_updatedAt desc`;
-        break;
-    }
-  } else {
-    sortQuery = `_updatedAt desc`;
-  }
-
-  // Add filters
-  const filters = [];
-
-  // searching
+  // Searching
   if (params.search) {
-    filters.push(`name match "${params.search}*"`);
+    filters.push(`name match "${groqSafeString(params.search)}*"`);
   }
 
-  // gender filtering
+  // Gender filtering
   if (params.gender) {
-    const query = multiQuerySplit(params.gender);
-    filters.push(`gender in [${query}]`);
+    const genderValues = params.gender
+      .split(",")
+      .map((g) => `"${groqSafeString(g.trim())}"`)
+      .join(",");
+    filters.push(`gender in [${genderValues}]`);
   }
 
-  // category filtering
-  if (params.category) {
-    if (!params.category.includes(",")) {
-      const matching = categories.find(
-        (category) =>
-          category.name?.toLowerCase() === params.category?.toLowerCase()
-      );
-
-      filters.push(`productCategory._ref in ["${matching?._id}"]`);
-    } else {
-      const categoryQueries = params.category.split(",");
-      const categoryIds = categoryQueries.map((query) => {
-        return categories.find(
-          (category) => category.name?.toLowerCase() === query.toLowerCase()
-        );
-      });
-
-      filters.push(
-        `productCategory._ref in [${categoryIds.map((category) => `"${category!._id}"`).join(",")}]`
-      );
-    }
+  // Category filtering
+  const categoryFilter = buildFilter(
+    params.category,
+    categories,
+    "productCategory"
+  );
+  if (categoryFilter) {
+    filters.push(categoryFilter);
   }
 
-  // material filtering
-  if (params.material) {
-    if (!params.material.includes(",")) {
-      const matching = materials.find(
-        (material) =>
-          material.name?.toLowerCase() === params.material?.toLowerCase()
-      );
-
-      filters.push(`material._ref in ["${matching?._id}"]`);
-    } else {
-      const materialQueries = params.material.split(",");
-      const materialIds = materialQueries.map((query) => {
-        return materials.find(
-          (material) => material.name?.toLowerCase() === query.toLowerCase()
-        );
-      });
-
-      filters.push(
-        `material._ref in [${materialIds.map((material) => `"${material!._id}"`).join(",")}]`
-      );
-    }
+  // Material filtering
+  const materialFilter = buildFilter(params.material, materials, "material");
+  if (materialFilter) {
+    filters.push(materialFilter);
   }
 
-  // stone filtering
-  if (params.stone) {
-    if (!params.stone.includes(",")) {
-      const matching = stones.find(
-        (stone) => stone.name?.toLowerCase() === params.stone?.toLowerCase()
-      );
-
-      filters.push(`stones._ref in ["${matching?._id}"]`);
-    } else {
-      const stoneQueries = params.stone.split(",");
-      const stoneIds = stoneQueries.map((query) => {
-        return stones.find(
-          (stone) => stone.name?.toLowerCase() === query.toLowerCase()
-        );
-      });
-
-      filters.push(
-        `stones._ref in [${stoneIds.map((stone) => `"${stone!._id}"`).join(",")}]`
-      );
-    }
+  // Stone filtering
+  const stoneFilter = buildFilter(params.stone, stones, "stones");
+  if (stoneFilter) {
+    filters.push(stoneFilter);
   }
 
-  // price filtering
+  // Price filtering
   if (params.minprice) {
     filters.push(`price >= ${params.minprice}`);
   }
@@ -135,12 +107,29 @@ export function productQueryBuilder(
     sanityQuery += ` && (${filters.join(" && ")})`;
   }
 
-  return (sanityQuery += `] {
-      _id,
-      name,
-      price,
-      discountPrice,
-      "image": images[0].asset->url,
-      "slug": slug.current
-    } | order(${sortQuery})`);
+  let sortQuery = "_updatedAt desc"; // Default sort
+  if (params.sort) {
+    switch (params.sort) {
+      case "new":
+        sortQuery = `_updatedAt desc`;
+        break;
+      case "pricedes":
+        sortQuery = `price desc`;
+        break;
+      case "priceasc":
+        sortQuery = `price asc`;
+        break;
+    }
+  }
+
+  sanityQuery += `] {
+    _id,
+    name,
+    price,
+    discountPrice,
+    "image": images[0].asset->url,
+    "slug": slug.current
+  } | order(${sortQuery}) [0...5]`;
+
+  return sanityQuery;
 }
