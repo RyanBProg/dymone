@@ -72,9 +72,12 @@ export default async function page({ params }: Props) {
         <p className="mt-2 text-neutral-700 text-base max-w-prose">
           {(product.description &&
             product.description
-              .map((block: any) =>
-                block.children?.map((child: any) => child.text).join(" ")
-              )
+              .map((block) => {
+                if ("children" in block) {
+                  return block.children?.map((child) => child.text).join(" ");
+                }
+                return "";
+              })
               .join("\n")) ||
             ""}
         </p>

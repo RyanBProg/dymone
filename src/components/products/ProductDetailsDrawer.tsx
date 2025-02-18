@@ -59,8 +59,8 @@ export default function ProductDetailsDrawer({ productData }: Props) {
           <div className="px-4 overflow-hidden">
             We offer fast and reliable shipping, with orders typically processed
             within 1-2 business days. Standard and expedited shipping options
-            are available at checkout. If you're not completely satisfied, we
-            accept returns within 30 days of delivery, as long as the item is
+            are available at checkout. If you&apos;re not completely satisfied,
+            we accept returns within 30 days of delivery, as long as the item is
             unused and in its original packaging. Refunds are processed within
             5-7 business days after we receive your return. For more details,
             please visit our Shipping & Returns Policy.
