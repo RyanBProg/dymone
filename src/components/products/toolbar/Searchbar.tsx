@@ -20,11 +20,11 @@ export default function Searchbar() {
   function handleSearch(e: FormEvent, action: "submit" | "clear") {
     e.preventDefault();
 
-    const params = new URLSearchParams(searchParams);
+    let params = new URLSearchParams();
     if (search && action === "submit") {
-      params.forEach((_, key) => params.delete(key));
       params.set("search", search);
     } else {
+      params = new URLSearchParams(searchParams);
       setSearch("");
       params.delete("search");
     }

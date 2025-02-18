@@ -133,6 +133,8 @@ export default function ProductFilterModal({
     e.preventDefault();
     const params = new URLSearchParams(searchParams);
 
+    params.set("page", "1");
+
     if (selectedGenders.length >= 1) {
       params.set("gender", selectedGenders.join(","));
     } else {

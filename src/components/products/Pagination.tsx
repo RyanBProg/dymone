@@ -2,17 +2,27 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ALL_PRODUCTS_PREVIEW_QUERYResult } from "../../../sanity.types";
 
 type Props = {
-  count: number;
+  productsPreviewData: ALL_PRODUCTS_PREVIEW_QUERYResult;
 };
 
-export default function Pagination({ count }: Props) {
+export default function Pagination({ productsPreviewData }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
   const pageNumber = parseInt(searchParams.get("page") || "1");
+  const totalPages = Math.ceil(productsPreviewData.total / 12);
+  const hasNextPage = pageNumber < totalPages;
+  const hasPrevPage = pageNumber > 1;
+
+  // debugging
+  console.log("hasNextPage: ", hasNextPage);
+  console.log("hasPrevPage: ", hasPrevPage);
+  console.log("totalPages: ", totalPages);
+  console.log("data: ", productsPreviewData);
 
   const handleNextPage = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -26,23 +36,21 @@ export default function Pagination({ count }: Props) {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  if (pageNumber <= 1 && count < 12) {
-    return null;
-  }
-
   return (
     <div className="mx-auto flex justify-center items-center w-fit gap-5 mt-20 bg-white/70 backdrop-blur-sm shadow rounded-lg p-1">
       <button
         className="hover:cursor-pointer hover:bg-purple-100 rounded-md px-2 py-1.5 transition-colors duration-300 flex gap-1 items-center disabled:opacity-10 disabled:bg-white disabled:cursor-auto"
         onClick={handlePrevPage}
-        disabled={pageNumber <= 1}>
+        disabled={!hasPrevPage}>
         <ChevronLeft size={20} strokeWidth={1.5} />
       </button>
-      <span className="text-neutral-600">Page: {pageNumber}</span>
+      <span className="text-neutral-600">
+        Page {pageNumber} of {totalPages}
+      </span>
       <button
-        className="hover:cursor-pointer hover:bg-purple-100 rounded-md px-2 py-1.5 transition-colors duration-300 flex gap-1 items-center"
+        className="hover:cursor-pointer hover:bg-purple-100 rounded-md px-2 py-1.5 transition-colors duration-300 flex gap-1 items-center disabled:opacity-10 disabled:bg-white disabled:cursor-auto"
         onClick={handleNextPage}
-        disabled={count < 12}>
+        disabled={!hasNextPage}>
         <ChevronRight size={20} strokeWidth={1.5} />
       </button>
     </div>
