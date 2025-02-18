@@ -11,6 +11,7 @@ import {
   getFilteredProductsPreview,
 } from "@/actions/sanity";
 import NoProducts from "@/components/products/NoProducts";
+import ErrorFetchingProducts from "@/components/products/ErrorFetchingProducts";
 
 export const metadata: Metadata = {
   title: "Store",
@@ -45,9 +46,9 @@ export default async function Home({ searchParams }: Props) {
     PRODUCTS_QUERY
   )) as { data: ALL_PRODUCTS_PREVIEW_QUERYResult };
 
-  if (!productsPreviewData || productsPreviewData.products.length < 1) {
+  if (!productsPreviewData) {
     console.log("Error fetching product data");
-    return <NoProducts />;
+    return <ErrorFetchingProducts />;
   }
 
   return (

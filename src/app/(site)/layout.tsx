@@ -1,6 +1,7 @@
 import "../globals.css";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import { SanityLive } from "@/sanity/lib/live";
 import { ClerkProvider } from "@clerk/nextjs";
 
 export default function ShopLayout({
@@ -13,6 +14,7 @@ export default function ShopLayout({
       <Header />
       {children}
       <Footer />
+      <SanityLive />
     </ClerkProvider>
   );
 }

@@ -2,10 +2,10 @@ import { Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
-import { PRODUCTGRID_QUERYResult } from "../../../sanity.types";
+import { ALL_PRODUCTS_PREVIEW_QUERYResult } from "../../../sanity.types";
 
 type Props = {
-  product: PRODUCTGRID_QUERYResult[number];
+  product: ALL_PRODUCTS_PREVIEW_QUERYResult["products"][0];
 };
 
 export default function GridProductCard({ product }: Props) {
@@ -18,6 +18,7 @@ export default function GridProductCard({ product }: Props) {
           src={urlFor(product.image!)?.url()}
           alt={product.name || "product image"}
           fill
+          sizes=""
           className="object-cover hover:scale-105 transition-transform duration-500"
         />
         <div className="group absolute bottom-2 right-2 flex items-center gap-2">

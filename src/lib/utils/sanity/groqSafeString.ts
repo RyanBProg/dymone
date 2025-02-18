@@ -3,7 +3,7 @@ export function groqSafeString(input: string): string {
   if (!input) return "";
 
   // Escape special characters
-  let escapedString = input
+  const escapedString = input
     .replace(/\\/g, "\\\\") // Escape backslashes
     .replace(/"/g, '\\"'); // Escape double quotes
 

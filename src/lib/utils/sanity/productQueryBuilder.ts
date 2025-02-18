@@ -1,4 +1,3 @@
-import { defineQuery } from "next-sanity";
 import {
   CATEGORIES_QUERYResult,
   MATERIALS_QUERYResult,

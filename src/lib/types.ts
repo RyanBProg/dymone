@@ -1,5 +1,3 @@
-import { Product } from "../../sanity.types";
-
 export type ProductCategory = {
   _id: string;
   name: string;

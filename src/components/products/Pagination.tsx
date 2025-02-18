@@ -19,10 +19,10 @@ export default function Pagination({ productsPreviewData }: Props) {
   const hasPrevPage = pageNumber > 1;
 
   // debugging
-  console.log("hasNextPage: ", hasNextPage);
-  console.log("hasPrevPage: ", hasPrevPage);
-  console.log("totalPages: ", totalPages);
-  console.log("data: ", productsPreviewData);
+  // console.log("hasNextPage: ", hasNextPage);
+  // console.log("hasPrevPage: ", hasPrevPage);
+  // console.log("totalPages: ", totalPages);
+  // console.log("data: ", productsPreviewData);
 
   const handleNextPage = () => {
     const params = new URLSearchParams(searchParams.toString());
