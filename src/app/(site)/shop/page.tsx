@@ -10,7 +10,6 @@ import {
   getAllProductStones,
   getFilteredProductsPreview,
 } from "@/actions/sanity";
-import NoProducts from "@/components/products/NoProducts";
 import ErrorFetchingProducts from "@/components/products/ErrorFetchingProducts";
 
 export const metadata: Metadata = {

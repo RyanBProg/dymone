@@ -9,7 +9,7 @@ import { groqSafeString } from "./groqSafeString";
 // Helper function to build a filter for category, material, or stone
 function buildFilter(
   paramValue: string | undefined,
-  items: any[],
+  items: CATEGORIES_QUERYResult | MATERIALS_QUERYResult | STONES_QUERYResult,
   fieldName: string
 ): string {
   if (!paramValue) {
@@ -19,7 +19,7 @@ function buildFilter(
   const queryValues = paramValue.split(",").map((v) => v.trim().toLowerCase());
 
   const validIds = items
-    .filter((item) => queryValues.includes(item.name?.toLowerCase()))
+    .filter((item) => queryValues.includes(item.name!.toLowerCase()))
     .map((item) => item._id);
 
   if (validIds.length === 0) {
