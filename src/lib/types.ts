@@ -32,5 +32,4 @@ export type ProductURLParams = {
   category?: string;
   material?: string;
   page?: string;
-  limit?: string;
 };
