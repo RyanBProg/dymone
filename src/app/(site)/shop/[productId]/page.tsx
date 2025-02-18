@@ -1,7 +1,9 @@
 import { Plus } from "lucide-react";
 import ProductGallery from "@/components/products/ProductGallery";
-import { sanityFetch } from "@/sanity/lib/live";
-import { Product } from "../../../../../sanity.types";
+import { GET_PRODUCT_QUERYResult } from "../../../../../sanity.types";
+import ErrorFetchingProducts from "@/components/products/ErrorFetchingProducts";
+import { getProductById } from "@/actions/sanity";
+import ProductDetailsDrawer from "@/components/products/ProductDetailsDrawer";
 
 type Props = {
   params: Promise<{ productId: string }>;
@@ -9,17 +11,24 @@ type Props = {
 
 export default async function page({ params }: Props) {
   const { productId } = await params;
-  const { data: product } = (await sanityFetch({
-    query: `*[_type == "product" && _id == "${productId}"][0]`,
-  })) as { data: Product };
+  const { data: product } = (await getProductById(productId)) as {
+    data: GET_PRODUCT_QUERYResult;
+  };
+
+  if (!product) {
+    console.log("Error fetching product data");
+    return <ErrorFetchingProducts />;
+  }
+
+  console.log(product);
 
   return (
     <div>
       <section className="relative flex flex-col">
-        <ProductGallery images={product.images} />
+        <ProductGallery images={product.images!} />
         <div className="m-2 md:m-0 md:absolute md:max-w-md md:right-2 md:bottom-2 grid gap-2">
           <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4">
-            <p className="font-bold text-lg">{product.name}</p>
+            <h1 className="font-bold text-lg mb-2">{product.name}</h1>
             <div className="flex gap-1 items-center">
               <span className="font-light">
                 ${product.discountPrice ? product.discountPrice : product.price}
@@ -30,11 +39,6 @@ export default async function page({ params }: Props) {
                 </span>
               )}
             </div>
-            <p className="mt-2 text-neutral-600 text-sm">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-              voluptates reiciendis debitis. Quaerat, sed animi soluta,
-              suscipit, molestias at corrupti quos quam id beatae neque?
-            </p>
           </div>
           <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4 flex justify-between">
             <div>
@@ -66,56 +70,31 @@ export default async function page({ params }: Props) {
       </section>
       <section className="px-4 my-10 md:my-20 flex flex-col gap-10 justify-between md:flex-row">
         <p className="mt-2 text-neutral-700 text-base max-w-prose">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-          voluptates reiciendis debitis. Quaerat, sed animi soluta, suscipit,
-          molestias at corrupti quos quam id beatae neque? Lorem ipsum dolor,
-          sit amet consectetur adipisicing elit. Nostrum, veniam sequi nesciunt
-          vel unde expedita hic quam pariatur tenetur nam? Lorem ipsum dolor
-          sit, amet consectetur adipisicing elit. Doloribus dolore in nulla
-          nobis vel libero sunt delectus eveniet inventore magni.
+          {(product.description &&
+            product.description
+              .map((block: any) =>
+                block.children?.map((child: any) => child.text).join(" ")
+              )
+              .join("\n")) ||
+            ""}
         </p>
         <ul>
           <li className="md:text-right">
             <span className="mr-2 font-bold">SKU</span>
-            0192
+            {product.sku}
           </li>
           <li className="md:text-right">
-            <span className="mr-2 font-bold">Category</span>Watches
+            <span className="mr-2 font-bold">Category</span>
+            {product.productCategory?.name}
           </li>
           <li className="md:text-right">
-            <span className="mr-2 font-bold">Tags</span>Watches, Gold, Womans
+            <span className="mr-2 font-bold">Tags</span>
+            {product.gender}, {product.material?.name}, {product.stone?.name}
           </li>
         </ul>
       </section>
       <section className="mt-10 mb-20 md:my-20">
-        <div className="p-4 rounded-lg mx-auto bg-neutral-200 max-w-4xl">
-          <ul className="grid gap-4">
-            <li>
-              <button className="flex gap-2 items-center hover:bg-white w-full px-2 py-1 rounded-md transition-colors">
-                <Plus strokeWidth={1.5} size={16} />
-                Product Details
-              </button>
-            </li>
-            <li>
-              <button className="flex gap-2 items-center hover:bg-white w-full px-2 py-1 rounded-md transition-colors">
-                <Plus strokeWidth={1.5} size={16} />
-                Materials
-              </button>
-            </li>
-            <li>
-              <button className="flex gap-2 items-center hover:bg-white w-full px-2 py-1 rounded-md transition-colors">
-                <Plus strokeWidth={1.5} size={16} />
-                Shipping and Returns
-              </button>
-            </li>
-            <li>
-              <button className="flex gap-2 items-center hover:bg-white w-full px-2 py-1 rounded-md transition-colors">
-                <Plus strokeWidth={1.5} size={16} />
-                Gift Wrapping
-              </button>
-            </li>
-          </ul>
-        </div>
+        <ProductDetailsDrawer productData={product} />
       </section>
     </div>
   );

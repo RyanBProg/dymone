@@ -39,3 +39,9 @@ export const ALL_PRODUCTS_PREVIEW_QUERY = defineQuery(`
   } | order(price desc) [0...12]
   }
 `);
+
+export const GET_PRODUCT_QUERY =
+  defineQuery(`*[_type == "product" && _id == "6fabe1e4-6357-4741-8197-4eb0a533b0cf"]{
+    sku, gender, name, price, discountPrice, description, images, 
+    material ->, stone ->, productCategory ->, weight, stock
+    }[0]`);

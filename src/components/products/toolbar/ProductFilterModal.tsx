@@ -29,7 +29,7 @@ export default function ProductFilterModal({
 
   const genderOptions = ["Male", "Female", "Unisex"];
 
-  const MAX_PRICE = 1000; // <- get this from sanity
+  const MAX_PRICE = 600; // <- get this from sanity
   // TODO: add useEffect to setPriceRange to MAX_PRICE from sanity
 
   const searchParams = useSearchParams();

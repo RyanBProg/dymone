@@ -42,3 +42,12 @@ export const getFilteredProductsPreview = async (PRODUCTS_QUERY: string) => {
     return null;
   }
 };
+
+export const getProductById = async (productId: string) => {
+  return sanityFetch({
+    query: `*[_type == "product" && _id == "${productId}"]{
+    _id, sku, gender, name, price, discountPrice, description, images, 
+    material ->, stone ->, productCategory ->, weight, stock
+    }[0]`,
+  });
+};
