@@ -26,13 +26,16 @@ export const STONES_QUERY = defineQuery(`
   } | order(name asc)
 `);
 
-export const PRODUCTGRID_QUERY = defineQuery(`
-  *[_type == "product"] {
+export const ALL_PRODUCTS_PREVIEW_QUERY = defineQuery(`
+{
+    "total": count(*[_type == "product"]),
+    "products": *[_type == "product"] {
     _id,
     name,
     price,
     discountPrice,
-    "image": images[0],
+    "image": images[0].asset->url,
     "slug": slug.current
-  } | order(name asc)
+  } | order(price desc) [0...12]
+  }
 `);

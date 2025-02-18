@@ -1,3 +1,4 @@
+import { defineQuery } from "next-sanity";
 import {
   CATEGORIES_QUERYResult,
   MATERIALS_QUERYResult,
@@ -37,7 +38,14 @@ export function productQueryBuilder(
   materials: MATERIALS_QUERYResult,
   stones: STONES_QUERYResult
 ): string {
-  let sanityQuery = `*[_type == "product"`;
+  // Pagination
+  const ITEM_LIMIT = 12;
+  const currentPage = parseInt(groqSafeString(params.page || "1"));
+  const resultsStart = (currentPage - 1) * ITEM_LIMIT;
+  const resultsEnd = resultsStart + ITEM_LIMIT;
+
+  // Query start
+  let sanityQueryStart = `*[_type == "product"`;
   const filters: string[] = [];
 
   // Searching
@@ -85,7 +93,7 @@ export function productQueryBuilder(
   }
 
   if (filters.length) {
-    sanityQuery += ` && (${filters.join(" && ")})`;
+    sanityQueryStart += ` && (${filters.join(" && ")})`;
   }
   let sortQuery = "_createdAt desc"; // Default sort
   if (params.sort) {
@@ -102,20 +110,17 @@ export function productQueryBuilder(
     }
   }
 
-  // pagination
-  const page = parseInt(params.page || "1");
-  const limit = 12;
-  const start = (page - 1) * limit;
-  const end = start + limit;
-
-  sanityQuery += `] {
+  const fullQuery = `{
+    "total": count(${sanityQueryStart}]),
+    "products": ${sanityQueryStart}] {
     _id,
     name,
     price,
     discountPrice,
     "image": images[0].asset->url,
     "slug": slug.current
-  } | order(${sortQuery}) [${start}...${end}]`;
+  } | order(${sortQuery}) [${resultsStart}...${resultsEnd}]
+  }`;
 
-  return sanityQuery;
+  return fullQuery;
 }
