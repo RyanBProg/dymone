@@ -178,36 +178,7 @@ export type Product = {
   name?: string;
   slug?: Slug;
   sku?: string;
-  description?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-    _key: string;
-  }>;
+  description?: string;
   price?: number;
   discountPrice?: number;
   images?: Array<{
@@ -517,19 +488,17 @@ export type STONES_QUERYResult = Array<{
   slug: string | null;
 }>;
 // Variable: SINGLE_PRODUCT_FULL
-// Query: *[_type == "product" && _id == $productId]{    _id,    sku,    "slug": slug.current,    name,    "image": images[0].asset->url,    "description": description[].children,    price,    discountPrice,    gender,    productCategory -> {_id, name},    material -> {_id, name, description},    stone -> {_id, name, description},    stock,    weight,    _updatedAt,    _createdAt,    isFeatured    }[0]
+// Query: *[_type == "product" && _id == $productId]{    _id,    sku,    "slug": slug.current,    name,    "images": images[]{ "alt": alt, "url": asset->url },    description,    price,    discountPrice,    gender,    productCategory -> {_id, name},    material -> {_id, name, description},    stone -> {_id, name, description},    stock,    weight,    _updatedAt,    _createdAt,    isFeatured    }[0]
 export type SINGLE_PRODUCT_FULLResult = {
   _id: string;
   sku: string | null;
   slug: string | null;
   name: string | null;
-  image: string | null;
-  description: Array<Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  }> | null> | null;
+  images: Array<{
+    alt: string | null;
+    url: string | null;
+  }> | null;
+  description: string | null;
   price: number | null;
   discountPrice: number | null;
   gender: "Female" | "Male" | "Unisex" | null;
@@ -554,7 +523,7 @@ export type SINGLE_PRODUCT_FULLResult = {
   isFeatured: boolean | null;
 } | null;
 // Variable: ALL_PRODUCTS_PREVIEW
-// Query: {    "total": count(*[_type == "product"]),    "products": *[_type == "product"]      {        _id,        sku,        "slug": slug.current,        name,        "images": images[].asset->url,        price,        discountPrice,        gender,        productCategory,        material,        stone,        stock,        _updatedAt,        _createdAt,        isFeatured      } | order(price asc)    }
+// Query: {    "total": count(*[_type == "product"]),    "products": *[_type == "product"]      {        _id,        sku,        "slug": slug.current,        name,        "image": { "alt": images[0].alt, "url": images[0].asset->url },        price,        discountPrice,        gender,        productCategory,        material,        stone,        stock,        _updatedAt,        _createdAt,        isFeatured      } | order(price asc)    }
 export type ALL_PRODUCTS_PREVIEWResult = {
   total: number;
   products: Array<{
@@ -562,7 +531,10 @@ export type ALL_PRODUCTS_PREVIEWResult = {
     sku: string | null;
     slug: string | null;
     name: string | null;
-    images: Array<string | null> | null;
+    image: {
+      alt: string | null;
+      url: string | null;
+    };
     price: number | null;
     discountPrice: number | null;
     gender: "Female" | "Male" | "Unisex" | null;
@@ -598,7 +570,7 @@ declare module "@sanity/client" {
     "\n    *[_type == \"productCategory\"] {\n      _id,\n      name,\n      \"slug\": slug.current\n    } | order(name asc)\n  ": CATEGORIES_QUERYResult;
     "\n    *[_type == \"material\"] {\n      _id,\n      name,\n      description,\n      \"slug\": slug.current\n    } | order(name asc)\n  ": MATERIALS_QUERYResult;
     "\n    *[_type == \"stone\"] {\n      _id,\n      name,\n      description,\n      \"slug\": slug.current\n    } | order(name asc)\n  ": STONES_QUERYResult;
-    "*[_type == \"product\" && _id == $productId]{\n    _id,\n    sku,\n    \"slug\": slug.current,\n    name,\n    \"image\": images[0].asset->url,\n    \"description\": description[].children,\n    price,\n    discountPrice,\n    gender,\n    productCategory -> {_id, name},\n    material -> {_id, name, description},\n    stone -> {_id, name, description},\n    stock,\n    weight,\n    _updatedAt,\n    _createdAt,\n    isFeatured\n    }[0]": SINGLE_PRODUCT_FULLResult;
-    "{\n    \"total\": count(*[_type == \"product\"]),\n    \"products\": *[_type == \"product\"]\n      {\n        _id,\n        sku,\n        \"slug\": slug.current,\n        name,\n        \"images\": images[].asset->url,\n        price,\n        discountPrice,\n        gender,\n        productCategory,\n        material,\n        stone,\n        stock,\n        _updatedAt,\n        _createdAt,\n        isFeatured\n      } | order(price asc)\n    }": ALL_PRODUCTS_PREVIEWResult;
+    "*[_type == \"product\" && _id == $productId]{\n    _id,\n    sku,\n    \"slug\": slug.current,\n    name,\n    \"images\": images[]{ \"alt\": alt, \"url\": asset->url },\n    description,\n    price,\n    discountPrice,\n    gender,\n    productCategory -> {_id, name},\n    material -> {_id, name, description},\n    stone -> {_id, name, description},\n    stock,\n    weight,\n    _updatedAt,\n    _createdAt,\n    isFeatured\n    }[0]": SINGLE_PRODUCT_FULLResult;
+    "{\n    \"total\": count(*[_type == \"product\"]),\n    \"products\": *[_type == \"product\"]\n      {\n        _id,\n        sku,\n        \"slug\": slug.current,\n        name,\n        \"image\": { \"alt\": images[0].alt, \"url\": images[0].asset->url },\n        price,\n        discountPrice,\n        gender,\n        productCategory,\n        material,\n        stone,\n        stock,\n        _updatedAt,\n        _createdAt,\n        isFeatured\n      } | order(price asc)\n    }": ALL_PRODUCTS_PREVIEWResult;
   }
 }

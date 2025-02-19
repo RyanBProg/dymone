@@ -116,7 +116,7 @@ export function productQueryBuilder(
         sku,
         "slug": slug.current,
         name,
-        "images": images[].asset->url,
+        "image": { "alt": images[0].alt, "url": images[0].asset->url },
         price,
         discountPrice,
         gender,

@@ -62,7 +62,7 @@ export const getAllProductStones = async () => {
 export const getProductById = async (productId: string) => {
   if (!productId) {
     console.log("getProductById: No productId provided");
-    return [];
+    return null;
   }
 
   const SINGLE_PRODUCT_FULL =
@@ -71,8 +71,8 @@ export const getProductById = async (productId: string) => {
     sku,
     "slug": slug.current,
     name,
-    "image": images[0].asset->url,
-    "description": description[].children,
+    "images": images[]{ "alt": alt, "url": asset->url },
+    description,
     price,
     discountPrice,
     gender,
@@ -107,7 +107,7 @@ export const getAllProducts = async () => {
         sku,
         "slug": slug.current,
         name,
-        "images": images[].asset->url,
+        "image": { "alt": images[0].alt, "url": images[0].asset->url },
         price,
         discountPrice,
         gender,
