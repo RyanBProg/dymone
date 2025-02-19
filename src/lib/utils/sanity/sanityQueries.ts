@@ -84,7 +84,7 @@ export const getProductById = async (productId: string) => {
     _updatedAt,
     _createdAt,
     isFeatured
-  }`);
+    }[0]`);
 
   try {
     const product = await sanityFetch({

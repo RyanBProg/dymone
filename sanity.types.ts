@@ -517,8 +517,8 @@ export type STONES_QUERYResult = Array<{
   slug: string | null;
 }>;
 // Variable: SINGLE_PRODUCT_FULL
-// Query: *[_type == "product" && _id == $productId]{    _id,    sku,    "slug": slug.current,    name,    "image": images[0].asset->url,    "description": description[].children,    price,    discountPrice,    gender,    productCategory -> {_id, name},    material -> {_id, name, description},    stone -> {_id, name, description},    stock,    weight,    _updatedAt,    _createdAt,    isFeatured  }
-export type SINGLE_PRODUCT_FULLResult = Array<{
+// Query: *[_type == "product" && _id == $productId]{    _id,    sku,    "slug": slug.current,    name,    "image": images[0].asset->url,    "description": description[].children,    price,    discountPrice,    gender,    productCategory -> {_id, name},    material -> {_id, name, description},    stone -> {_id, name, description},    stock,    weight,    _updatedAt,    _createdAt,    isFeatured    }[0]
+export type SINGLE_PRODUCT_FULLResult = {
   _id: string;
   sku: string | null;
   slug: string | null;
@@ -552,7 +552,7 @@ export type SINGLE_PRODUCT_FULLResult = Array<{
   _updatedAt: string;
   _createdAt: string;
   isFeatured: boolean | null;
-}>;
+} | null;
 // Variable: ALL_PRODUCTS_PREVIEW
 // Query: {    "total": count(*[_type == "product"]),    "products": *[_type == "product"]      {        _id,        sku,        "slug": slug.current,        name,        "images": images[].asset->url,        price,        discountPrice,        gender,        productCategory,        material,        stone,        stock,        _updatedAt,        _createdAt,        isFeatured      } | order(price asc)    }
 export type ALL_PRODUCTS_PREVIEWResult = {
@@ -598,7 +598,7 @@ declare module "@sanity/client" {
     "\n    *[_type == \"productCategory\"] {\n      _id,\n      name,\n      \"slug\": slug.current\n    } | order(name asc)\n  ": CATEGORIES_QUERYResult;
     "\n    *[_type == \"material\"] {\n      _id,\n      name,\n      description,\n      \"slug\": slug.current\n    } | order(name asc)\n  ": MATERIALS_QUERYResult;
     "\n    *[_type == \"stone\"] {\n      _id,\n      name,\n      description,\n      \"slug\": slug.current\n    } | order(name asc)\n  ": STONES_QUERYResult;
-    "*[_type == \"product\" && _id == $productId]{\n    _id,\n    sku,\n    \"slug\": slug.current,\n    name,\n    \"image\": images[0].asset->url,\n    \"description\": description[].children,\n    price,\n    discountPrice,\n    gender,\n    productCategory -> {_id, name},\n    material -> {_id, name, description},\n    stone -> {_id, name, description},\n    stock,\n    weight,\n    _updatedAt,\n    _createdAt,\n    isFeatured\n  }": SINGLE_PRODUCT_FULLResult;
+    "*[_type == \"product\" && _id == $productId]{\n    _id,\n    sku,\n    \"slug\": slug.current,\n    name,\n    \"image\": images[0].asset->url,\n    \"description\": description[].children,\n    price,\n    discountPrice,\n    gender,\n    productCategory -> {_id, name},\n    material -> {_id, name, description},\n    stone -> {_id, name, description},\n    stock,\n    weight,\n    _updatedAt,\n    _createdAt,\n    isFeatured\n    }[0]": SINGLE_PRODUCT_FULLResult;
     "{\n    \"total\": count(*[_type == \"product\"]),\n    \"products\": *[_type == \"product\"]\n      {\n        _id,\n        sku,\n        \"slug\": slug.current,\n        name,\n        \"images\": images[].asset->url,\n        price,\n        discountPrice,\n        gender,\n        productCategory,\n        material,\n        stone,\n        stock,\n        _updatedAt,\n        _createdAt,\n        isFeatured\n      } | order(price asc)\n    }": ALL_PRODUCTS_PREVIEWResult;
   }
 }
