@@ -112,13 +112,22 @@ export function productQueryBuilder(
   const fullQuery = `{
     "total": count(${sanityQueryStart}]),
     "products": ${sanityQueryStart}] {
-    _id,
-    name,
-    price,
-    discountPrice,
-    "image": images[0].asset->url,
-    "slug": slug.current
-  } | order(${sortQuery}) [${resultsStart}...${resultsEnd}]
+        _id,
+        sku,
+        "slug": slug.current,
+        name,
+        "images": images[].asset->url,
+        price,
+        discountPrice,
+        gender,
+        productCategory,
+        material,
+        stone,
+        stock,
+        _updatedAt,
+        _createdAt,
+        isFeatured
+      } | order(${sortQuery}) [${resultsStart}...${resultsEnd}]
   }`;
 
   return fullQuery;
