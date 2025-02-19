@@ -16,6 +16,7 @@ export const materialType = defineType({
       name: "description",
       type: "text",
       title: "Description",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
