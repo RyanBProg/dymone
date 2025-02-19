@@ -4,10 +4,12 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { urlFor } from "@/sanity/lib/image";
-import { Product } from "../../../sanity.types";
 
 type Props = {
-  images: Product["images"];
+  images: {
+    url: string;
+    alt: string | null;
+  }[];
 };
 
 export default function ProductGallery({ images }: Props) {
@@ -40,14 +42,14 @@ export default function ProductGallery({ images }: Props) {
       <div
         ref={carouselRef}
         className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide">
-        {images!.map((image, index) => (
+        {images.map((image, index) => (
           <div
             key={index}
             ref={photoRef}
             className="relative w-full max-w-4xl h-full flex-shrink-0 snap-start">
             <Image
-              src={urlFor(image)?.url()}
-              alt={""}
+              src={image.url}
+              alt={image.alt || "Product image"}
               fill
               className="object-cover"
               sizes="100vw"

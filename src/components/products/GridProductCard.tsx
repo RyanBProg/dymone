@@ -1,11 +1,10 @@
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { urlFor } from "@/sanity/lib/image";
-import { ALL_PRODUCTS_PREVIEW_QUERYResult } from "../../../sanity.types";
+import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 
 type Props = {
-  product: ALL_PRODUCTS_PREVIEW_QUERYResult["products"][0];
+  product: ALL_PRODUCTS_PREVIEWResult["products"][0];
 };
 
 export default function GridProductCard({ product }: Props) {
@@ -15,8 +14,8 @@ export default function GridProductCard({ product }: Props) {
         href={`/shop/${product._id}`}
         className="block relative h-[400px] w-full overflow-clip rounded-3xl">
         <Image
-          src={urlFor(product.image!)?.url()}
-          alt={product.name || "product image"}
+          src={product.image.url}
+          alt={product.image.alt || "product image"}
           fill
           sizes=""
           className="object-cover hover:scale-105 transition-transform duration-500"

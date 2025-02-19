@@ -113,10 +113,9 @@ export const getProductById = async (
   }
 };
 
-export const getAllProducts = async (): Promise<
-  ALL_PRODUCTS_PREVIEWResult | []
-> => {
-  const ALL_PRODUCTS_PREVIEW = defineQuery(`{
+export const getAllProducts =
+  async (): Promise<ALL_PRODUCTS_PREVIEWResult | null> => {
+    const ALL_PRODUCTS_PREVIEW = defineQuery(`{
     "total": count(*[_type == "product"]),
     "products": *[_type == "product"]
       {
@@ -138,28 +137,28 @@ export const getAllProducts = async (): Promise<
       } | order(price asc)
     }`);
 
-  try {
-    const products = await sanityFetch({ query: ALL_PRODUCTS_PREVIEW });
-    return products.data || [];
-  } catch (error) {
-    console.error("Fetch failed:", error);
-    return [];
-  }
-};
+    try {
+      const products = await sanityFetch({ query: ALL_PRODUCTS_PREVIEW });
+      return products.data;
+    } catch (error) {
+      console.error("Fetch failed:", error);
+      return null;
+    }
+  };
 
 export const getFilteredProductsPreview = async (
   PRODUCTS_QUERY: string
-): Promise<ALL_PRODUCTS_PREVIEWResult | []> => {
+): Promise<ALL_PRODUCTS_PREVIEWResult | null> => {
   if (!PRODUCTS_QUERY) {
     console.log("getFilteredProductsPreview: No PRODUCTS_QUERY provided");
-    return [];
+    return null;
   }
 
   try {
     const products = await sanityFetch({ query: PRODUCTS_QUERY });
-    return products.data || [];
+    return products.data;
   } catch (error) {
     console.error("Fetch failed:", error);
-    return [];
+    return null;
   }
 };

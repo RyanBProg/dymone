@@ -2,18 +2,18 @@
 
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { GET_PRODUCT_QUERYResult } from "../../../sanity.types";
+import { SINGLE_PRODUCT_FULLResult } from "@/lib/types";
 
 type Props = {
-  productData: GET_PRODUCT_QUERYResult;
+  product: SINGLE_PRODUCT_FULLResult;
 };
 
-export default function ProductDetailsDrawer({ productData }: Props) {
+export default function ProductDetailsDrawer({ product }: Props) {
   const [materialDrawerOpen, setMaterialDrawerOpen] = useState(false);
   const [shippingDrawerOpen, setShippingDrawerOpen] = useState(false);
   const [giftDrawerOpen, setGiftDrawerOpen] = useState(false);
 
-  if (!productData) {
+  if (!product) {
     console.log("Error fetching product data");
     return null;
   }
@@ -32,18 +32,20 @@ export default function ProductDetailsDrawer({ productData }: Props) {
         <div
           className={`grid ${materialDrawerOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500`}>
           <div className="px-4 flex flex-col gap-4 overflow-hidden">
-            {productData.material && (
-              <div>
-                <h3 className="font-medium">{productData.material.name}</h3>
-                <p>{productData.material.description}</p>
-              </div>
-            )}
-            {productData.stone && (
-              <div>
-                <h3 className="font-medium">{productData.stone.name}</h3>
-                <p>{productData.stone.description}</p>
-              </div>
-            )}
+            <div className="pb-5">
+              {product.material && (
+                <div>
+                  <h3 className="font-medium">{product.material.name}</h3>
+                  <p>{product.material.description}</p>
+                </div>
+              )}
+              {product.stone && (
+                <div>
+                  <h3 className="font-medium">{product.stone.name}</h3>
+                  <p>{product.stone.description}</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <li>
@@ -57,13 +59,16 @@ export default function ProductDetailsDrawer({ productData }: Props) {
         <div
           className={`grid ${shippingDrawerOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500`}>
           <div className="px-4 overflow-hidden">
-            We offer fast and reliable shipping, with orders typically processed
-            within 1-2 business days. Standard and expedited shipping options
-            are available at checkout. If you&apos;re not completely satisfied,
-            we accept returns within 30 days of delivery, as long as the item is
-            unused and in its original packaging. Refunds are processed within
-            5-7 business days after we receive your return. For more details,
-            please visit our Shipping & Returns Policy.
+            <p className="pb-5">
+              We offer fast and reliable shipping, with orders typically
+              processed within 1-2 business days. Standard and expedited
+              shipping options are available at checkout. If you&apos;re not
+              completely satisfied, we accept returns within 30 days of
+              delivery, as long as the item is unused and in its original
+              packaging. Refunds are processed within 5-7 business days after we
+              receive your return. For more details, please visit our Shipping &
+              Returns Policy.
+            </p>
           </div>
         </div>
         <li>
@@ -77,10 +82,12 @@ export default function ProductDetailsDrawer({ productData }: Props) {
         <div
           className={`grid ${giftDrawerOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500`}>
           <div className="px-4 overflow-hidden">
-            Make your purchase extra special with our elegant gift-wrapping
-            service. Each item is carefully wrapped in premium packaging,
-            perfect for any occasion. Simply select the gift-wrapping option at
-            checkout to add a personal touch to your order.
+            <p className="pb-5">
+              Make your purchase extra special with our elegant gift-wrapping
+              service. Each item is carefully wrapped in premium packaging,
+              perfect for any occasion. Simply select the gift-wrapping option
+              at checkout to add a personal touch to your order.
+            </p>
           </div>
         </div>
       </ul>

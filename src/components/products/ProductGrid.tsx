@@ -1,16 +1,19 @@
 import React from "react";
 import GridProductCard from "./GridProductCard";
-import { ALL_PRODUCTS_PREVIEW_QUERYResult } from "../../../sanity.types";
+import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 import Pagination from "./Pagination";
 import NoProducts from "./NoProducts";
 
 type Props = {
-  productsPreviewData: ALL_PRODUCTS_PREVIEW_QUERYResult;
+  productsPreviewData: ALL_PRODUCTS_PREVIEWResult;
 };
 
 export default async function ProductGrid({ productsPreviewData }: Props) {
-  if (productsPreviewData.products.length < 1) {
-    console.log("Error fetching product data");
+  if (
+    !productsPreviewData.products ||
+    productsPreviewData.products.length < 1
+  ) {
+    console.log("No products found");
     return <NoProducts />;
   }
 
