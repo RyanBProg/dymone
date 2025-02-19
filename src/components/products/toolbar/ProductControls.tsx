@@ -11,6 +11,7 @@ type Props = {
 
 export default function ProductControls({ product }: Props) {
   const [quantity, setQuantity] = useState(1);
+  const addToCart = useCartStore((state) => state.addToCart);
 
   if (!product) {
     return null;
@@ -24,8 +25,6 @@ export default function ProductControls({ product }: Props) {
     discountPrice: product.discountPrice,
     quantity: quantity,
   };
-
-  const addToCart = useCartStore((state) => state.addToCart);
 
   return (
     <div className="m-2 md:m-0 md:absolute md:max-w-md md:right-2 md:bottom-2 grid gap-2">

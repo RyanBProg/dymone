@@ -2,10 +2,10 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ALL_PRODUCTS_PREVIEW_QUERYResult } from "../../../sanity.types";
+import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 
 type Props = {
-  productsPreviewData: ALL_PRODUCTS_PREVIEW_QUERYResult;
+  productsPreviewData: ALL_PRODUCTS_PREVIEWResult;
 };
 
 export default function Pagination({ productsPreviewData }: Props) {

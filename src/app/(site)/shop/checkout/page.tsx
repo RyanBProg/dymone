@@ -1,48 +1,41 @@
 "use client";
 
-import { useMenuToggle } from "@/hooks/useMenuToggle";
-import { useCartStore } from "@/zustand/cartStore";
-import { Minus, Plus, ShoppingBasket, X } from "lucide-react";
 import Image from "next/image";
+import { useCartStore } from "@/zustand/cartStore";
+import { ChevronLeft, Minus, Plus } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-export default function Cart() {
-  const { isMenuOpen, setIsMenuOpen, menuButtonRef, menuRef } = useMenuToggle();
+export default function page() {
   const cartItems = useCartStore((state) => state.cart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const incrementCartItem = useCartStore((state) => state.incrementCartItem);
   const decrementCartItem = useCartStore((state) => state.decrementCartItem);
+  const searchParams = useSearchParams();
+
+  if (searchParams.get("canceled")) {
+    console.log(
+      "Order canceled -- continue to shop around and checkout when you&apos;re ready."
+    );
+  }
 
   return (
-    <>
-      <div className="relative flex bg-white/70 backdrop-blur-sm shadow rounded-lg p-1">
-        <button
-          ref={menuButtonRef}
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="relative hover:cursor-pointer hover:bg-purple-100 rounded-md px-2 transition-colors duration-300 inline-block">
-          {isMenuOpen ? (
-            <X strokeWidth={1.5} size={20} />
-          ) : (
-            <>
-              <ShoppingBasket strokeWidth={1.5} size={20} />
-              <div className="absolute -top-2 -left-2 bg-purple-200 w-5 h-5 text-xs flex justify-center items-center rounded-full">
-                <span>{cartItems.length}</span>
-              </div>
-            </>
-          )}
-        </button>
-      </div>
-      <div
-        ref={menuRef}
-        className={`w-[300px] sm:w-[450px] absolute z-10 bottom-0 translate-y-full right-0 transition-all duration-500 bg-white/90 backdrop-blur-sm rounded-lg shadow ${
-          isMenuOpen
-            ? "opacity-100 -translate-x-2"
-            : "opacity-0 translate-x-full"
-        }`}>
-        <div className="bg-white rounded-lg p-4">
-          <p className="tracking-tighter font-medium">CART</p>
+    <div className="my-20 px-4 flex justify-center">
+      <div className="w-full max-w-4xl">
+        <div className="mb-10 md:mb-20">
+          <h1 className="tracking-tighter font-extrabold text-[4rem] mb-5">
+            Cart
+          </h1>
+          <div className="flex justify-center items-center w-fit gap-5 bg-white/70 backdrop-blur-sm shadow rounded-lg p-1">
+            <Link
+              href="/shop"
+              className="hover:cursor-pointer hover:bg-purple-100 text-sm rounded-md px-2 py-1 transition-colors duration-300 flex gap-1 items-center disabled:opacity-10 disabled:bg-white disabled:cursor-auto">
+              <ChevronLeft size={14} strokeWidth={1.5} />
+              Back to shop
+            </Link>
+          </div>
         </div>
-        <ul className="flex flex-col gap-4 p-4">
+        <ul className="w-full flex flex-col gap-10">
           {cartItems.length < 1 ? (
             <p className="text-neutral-600 text-sm text-center">
               NO ITEMS IN YOUR CART
@@ -52,19 +45,19 @@ export default function Cart() {
               {cartItems.map((cartItem) => (
                 // cart item
                 <li key={cartItem.name}>
-                  <div className="relative flex gap-4">
-                    <div className="h-16 w-16 bg-neutral-300 rounded-md overflow-clip flex justify-center items-center">
+                  <div className="relative flex gap-4 flex-col items-center md:flex-row">
+                    <div className="h-32 w-32 bg-neutral-300 rounded-md overflow-clip flex justify-center items-center">
                       <Image
                         src={cartItem.image.url}
                         alt={cartItem.image.alt || cartItem.name}
                         className="object-cover"
-                        height={64}
-                        width={64}
+                        height={128}
+                        width={128}
                       />
                     </div>
-                    <div className="grow">
-                      <div className="flex">
-                        <span className="grow font-medium">
+                    <div className="grow flex flex-col justify-center gap-3">
+                      <div className="flex flex-col gap-2 md:flex-row">
+                        <span className="grow font-medium text-center text-lg md:text-left">
                           {cartItem.name}
                         </span>
                         <span>${cartItem.price}</span>
@@ -96,14 +89,22 @@ export default function Cart() {
             </>
           )}
         </ul>
-        <div className="bg-white rounded-lg p-4">
-          <Link
-            href="/shop/checkout"
-            className="block text-center w-full tracking-tighter font-medium rounded-md bg-purple-100 px-2 py-1.5 hover:cursor-pointer hover:bg-purple-200 transition-colors duration-300">
-            CHECKOUT
-          </Link>
+
+        <div className="bg-white rounded-lg p-4 flex justify-between items-center mt-10">
+          <div>
+            <p className="font-medium text-xl">Sub Total</p>
+            <span className="text-lg">${409.99}</span>
+          </div>
+          <form action="/api/checkout_sessions" method="POST">
+            <button
+              type="submit"
+              role="link"
+              className="w-full tracking-tighter font-medium text-lg rounded-md bg-purple-100 px-10 py-1.5 hover:cursor-pointer hover:bg-purple-200 transition-colors duration-300">
+              ORDER
+            </button>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
