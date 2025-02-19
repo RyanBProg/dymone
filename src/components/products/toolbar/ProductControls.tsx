@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { SINGLE_PRODUCT_FULLResult } from "@/lib/types";
-import AddToCartButton from "../AddToCartButton";
+import { Plus } from "lucide-react";
+import { useCartStore } from "@/zustand/cartStore";
 
 type Props = {
   product: SINGLE_PRODUCT_FULLResult;
@@ -14,6 +15,17 @@ export default function ProductControls({ product }: Props) {
   if (!product) {
     return null;
   }
+
+  const cartItem = {
+    id: product._id,
+    name: product.name,
+    price: product.price,
+    image: product.images[0],
+    discountPrice: product.discountPrice,
+    quantity: quantity,
+  };
+
+  const addToCart = useCartStore((state) => state.addToCart);
 
   return (
     <div className="m-2 md:m-0 md:absolute md:max-w-md md:right-2 md:bottom-2 grid gap-2">
@@ -47,12 +59,18 @@ export default function ProductControls({ product }: Props) {
             className="border border-gray-400 rounded-md block w-16 px-2 py-1"
             onChange={(e) => setQuantity(parseInt(e.target.value))}
             value={quantity}
+            max={product.stock}
             required
           />
         </label>
       </div>
       <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4">
-        <AddToCartButton product={product} qty={quantity} />
+        <button
+          onClick={() => addToCart(cartItem)}
+          className="rounded-md flex gap-1 items-center transition-colors hover:bg-purple-100 hover:cursor-pointer px-2 py-1">
+          <Plus strokeWidth={1.5} size={18} />
+          ADD TO CART
+        </button>
       </div>
     </div>
   );

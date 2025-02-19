@@ -17,8 +17,9 @@ export default function GridProductCard({ product }: Props) {
           src={product.image.url}
           alt={product.image.alt || "product image"}
           fill
-          sizes=""
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover hover:scale-105 transition-transform duration-500"
+          priority
         />
         <div className="group absolute bottom-2 right-2 flex items-center gap-2">
           <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/60 px-2 rounded-md">

@@ -53,7 +53,7 @@ export default function ProductGallery({ images }: Props) {
               fill
               className="object-cover"
               sizes="100vw"
-              priority={index === 0}
+              priority={index === 0 || index === 1}
             />
           </div>
         ))}
