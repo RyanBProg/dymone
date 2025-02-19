@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { urlFor } from "@/sanity/lib/image";
 
 type Props = {
   images: {

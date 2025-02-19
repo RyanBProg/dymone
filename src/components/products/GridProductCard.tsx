@@ -1,7 +1,7 @@
-import { Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
+import AddToCartButton from "./AddToCartButton";
 
 type Props = {
   product: ALL_PRODUCTS_PREVIEWResult["products"][0];
@@ -21,14 +21,7 @@ export default function GridProductCard({ product }: Props) {
           className="object-cover hover:scale-105 transition-transform duration-500"
           priority
         />
-        <div className="group absolute bottom-2 right-2 flex items-center gap-2">
-          <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/60 px-2 rounded-md">
-            Add to Cart
-          </span>
-          <button className="bg-white/60 p-1 rounded-full hover:cursor-pointer hover:bg-white">
-            <Plus strokeWidth={1.5} />
-          </button>
-        </div>
+        <AddToCartButton product={product} />
       </Link>
       <div className="mt-2 grid gap-1">
         <span className="font-medium">{product.name}</span>

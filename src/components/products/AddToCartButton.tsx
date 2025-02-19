@@ -2,14 +2,16 @@
 
 import { useCartStore } from "@/zustand/cartStore";
 import { Plus } from "lucide-react";
-import { SINGLE_PRODUCT_FULLResult } from "@/lib/types";
+import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
+import { MouseEvent } from "react";
 
 type Props = {
-  product: SINGLE_PRODUCT_FULLResult;
-  qty: number;
+  product: ALL_PRODUCTS_PREVIEWResult["products"][0];
 };
 
-export default function AddToCartButton({ product, qty }: Props) {
+export default function AddToCartButton({ product }: Props) {
+  const addToCart = useCartStore((state) => state.addToCart);
+
   if (!product) {
     console.log("AddToCartButton: Error reading currentProduct");
     return null;
@@ -19,19 +21,26 @@ export default function AddToCartButton({ product, qty }: Props) {
     id: product._id,
     name: product.name,
     price: product.price,
-    image: product.images[0],
+    image: product.image,
     discountPrice: product.discountPrice,
-    quantity: qty,
+    quantity: 1,
   };
 
-  const addToCart = useCartStore((state) => state.addToCart);
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    addToCart(cartItem);
+  };
 
   return (
-    <button
-      // onClick={() => addToCart(cartItem)}
-      className="rounded-md flex gap-1 items-center transition-colors hover:bg-purple-100 hover:cursor-pointer px-2 py-1">
-      <Plus strokeWidth={1.5} size={18} />
-      ADD TO CART
-    </button>
+    <div className="group absolute bottom-2 right-2 flex items-center gap-2">
+      <span className="hidden group-hover:block transition-opacity bg-white/60 px-2 rounded-md">
+        Add to Cart
+      </span>
+      <button
+        onClick={handleClick}
+        className="bg-white/60 p-1 rounded-full hover:cursor-pointer hover:bg-white">
+        <Plus strokeWidth={1.5} />
+      </button>
+    </div>
   );
 }
