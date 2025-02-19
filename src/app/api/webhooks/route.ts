@@ -19,9 +19,14 @@ export async function POST(req: Request) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
-  } catch (err: any) {
-    const errorMessage = err.message;
-    console.log(err);
+  } catch (err) {
+    let errorMessage: string;
+    if (err instanceof Error) {
+      errorMessage = err.message;
+    } else {
+      errorMessage = String(err); // Fallback to string conversion
+    }
+    console.error(err);
     console.log(`Error message: ${errorMessage}`);
     return NextResponse.json(
       { message: `Webhook Error: ${errorMessage}` },
@@ -43,7 +48,13 @@ export async function POST(req: Request) {
         default:
           throw new Error(`Unhandled event: ${event.type}`);
       }
-    } catch (error: any) {
+    } catch (error) {
+      let errorMessage: string;
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else {
+        errorMessage = String(error);
+      }
       console.error(error);
       return NextResponse.json(
         { message: "Webhook handler failed" },

@@ -6,7 +6,7 @@ import { ChevronLeft, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function page() {
+export default function Home() {
   const cartItems = useCartStore((state) => state.cart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const incrementCartItem = useCartStore((state) => state.incrementCartItem);

@@ -29,11 +29,14 @@ export async function POST() {
     }
 
     return NextResponse.redirect(session.url, 303);
-  } catch (err: any) {
-    console.error(err);
-    return NextResponse.json(
-      { error: err.message },
-      { status: err.statusCode || 500 }
-    );
+  } catch (error) {
+    let errorMessage: string;
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = String(error);
+    }
+    console.error(errorMessage);
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
