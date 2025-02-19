@@ -2,7 +2,7 @@ import {
   CATEGORIES_QUERYResult,
   MATERIALS_QUERYResult,
   STONES_QUERYResult,
-} from "../../../../sanity.types";
+} from "@/lib/types";
 import { ProductURLParams } from "../../types";
 import { groqSafeString } from "./groqSafeString";
 

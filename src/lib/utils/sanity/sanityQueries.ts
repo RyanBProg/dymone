@@ -2,8 +2,17 @@
 
 import { sanityFetch } from "@/sanity/lib/live";
 import { defineQuery } from "next-sanity";
+import {
+  CATEGORIES_QUERYResult,
+  MATERIALS_QUERYResult,
+  STONES_QUERYResult,
+  ALL_PRODUCTS_PREVIEWResult,
+  SINGLE_PRODUCT_FULLResult,
+} from "@/lib/types";
 
-export const getAllProductCategories = async () => {
+export const getAllProductCategories = async (): Promise<
+  CATEGORIES_QUERYResult | []
+> => {
   const CATEGORIES_QUERY = defineQuery(`
     *[_type == "productCategory"] {
       _id,
@@ -21,7 +30,9 @@ export const getAllProductCategories = async () => {
   }
 };
 
-export const getAllProductMaterials = async () => {
+export const getAllProductMaterials = async (): Promise<
+  MATERIALS_QUERYResult | []
+> => {
   const MATERIALS_QUERY = defineQuery(`
     *[_type == "material"] {
       _id,
@@ -40,7 +51,9 @@ export const getAllProductMaterials = async () => {
   }
 };
 
-export const getAllProductStones = async () => {
+export const getAllProductStones = async (): Promise<
+  STONES_QUERYResult | []
+> => {
   const STONES_QUERY = defineQuery(`
     *[_type == "stone"] {
       _id,
@@ -59,7 +72,9 @@ export const getAllProductStones = async () => {
   }
 };
 
-export const getProductById = async (productId: string) => {
+export const getProductById = async (
+  productId: string
+): Promise<SINGLE_PRODUCT_FULLResult | null> => {
   if (!productId) {
     console.log("getProductById: No productId provided");
     return null;
@@ -98,7 +113,9 @@ export const getProductById = async (productId: string) => {
   }
 };
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (): Promise<
+  ALL_PRODUCTS_PREVIEWResult | []
+> => {
   const ALL_PRODUCTS_PREVIEW = defineQuery(`{
     "total": count(*[_type == "product"]),
     "products": *[_type == "product"]
@@ -130,7 +147,9 @@ export const getAllProducts = async () => {
   }
 };
 
-export const getFilteredProductsPreview = async (PRODUCTS_QUERY: string) => {
+export const getFilteredProductsPreview = async (
+  PRODUCTS_QUERY: string
+): Promise<ALL_PRODUCTS_PREVIEWResult | []> => {
   if (!PRODUCTS_QUERY) {
     console.log("getFilteredProductsPreview: No PRODUCTS_QUERY provided");
     return [];

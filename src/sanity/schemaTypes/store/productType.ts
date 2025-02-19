@@ -85,6 +85,7 @@ export const productType = defineType({
       options: {
         list: ["Male", "Female", "Unisex"],
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "weight",
