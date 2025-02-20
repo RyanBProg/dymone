@@ -99,6 +99,7 @@ export default function Cart() {
         <div className="bg-white rounded-lg p-4">
           <Link
             href="/shop/checkout"
+            onClick={() => setIsMenuOpen(false)}
             className="block text-center w-full tracking-tighter font-medium rounded-md bg-purple-100 px-2 py-1.5 hover:cursor-pointer hover:bg-purple-200 transition-colors duration-300">
             CHECKOUT
           </Link>

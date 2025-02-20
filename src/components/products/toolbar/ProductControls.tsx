@@ -64,12 +64,18 @@ export default function ProductControls({ product }: Props) {
         </label>
       </div>
       <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4">
-        <button
-          onClick={() => addToCart(cartItem)}
-          className="rounded-md flex gap-1 items-center transition-colors hover:bg-purple-100 hover:cursor-pointer px-2 py-1">
-          <Plus strokeWidth={1.5} size={18} />
-          ADD TO CART
-        </button>
+        {product.stock < 1 ? (
+          <span className="rounded-md flex gap-1 items-center bg-neutral-300 px-2 py-1">
+            OUT OF STOCK
+          </span>
+        ) : (
+          <button
+            onClick={() => addToCart(cartItem)}
+            className="rounded-md flex gap-1 items-center transition-colors hover:bg-purple-100 hover:cursor-pointer px-2 py-1">
+            <Plus strokeWidth={1.5} size={18} />
+            ADD TO CART
+          </button>
+        )}
       </div>
     </div>
   );

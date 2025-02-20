@@ -32,15 +32,24 @@ export default function AddToCartButton({ product }: Props) {
   };
 
   return (
-    <div className="group absolute bottom-2 right-2 flex items-center gap-2">
-      <span className="hidden group-hover:block transition-opacity bg-white/60 px-2 rounded-md">
-        Add to Cart
-      </span>
-      <button
-        onClick={handleClick}
-        className="bg-white/60 p-1 rounded-full hover:cursor-pointer hover:bg-white">
-        <Plus strokeWidth={1.5} />
-      </button>
+    <div
+      className={`${product.stock ? "right-2" : "mx-auto inset-x-0 w-fit"} group absolute bottom-2  flex items-center gap-2`}>
+      {product.stock ? (
+        <>
+          <span className="hidden group-hover:block transition-opacity bg-white/60 px-2 rounded-md">
+            Add to Cart
+          </span>
+          <button
+            onClick={handleClick}
+            className="bg-white/60 p-1 rounded-full hover:cursor-pointer hover:bg-white">
+            <Plus strokeWidth={1.5} />
+          </button>
+        </>
+      ) : (
+        <span className="rounded-md flex gap-1 items-center bg-white/40 px-2 py-1 hover:cursor-auto">
+          OUT OF STOCK
+        </span>
+      )}
     </div>
   );
 }
