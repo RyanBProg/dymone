@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type CartItem = {
+export type CartItem = {
   id: string;
   name: string;
   price: number;
-  discountPrice: number;
+  discountPrice: number | null;
   image: {
     url: string;
     alt: string | null;
@@ -104,7 +104,3 @@ export const useCartStore = create<CartState>()(
     }
   )
 );
-
-// TODO:
-// toast pop up for adding and removing from cart
-// checkout button goes to checkout page
