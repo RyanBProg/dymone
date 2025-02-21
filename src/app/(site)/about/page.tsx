@@ -25,7 +25,7 @@ export default async function AboutPage() {
             </div>
             <div className="relative h-[400px] rounded-xl overflow-hidden">
               <Image
-                src="/images/about/artistry.jpg"
+                src="/product.jpeg"
                 alt="Jewelry crafting process"
                 fill
                 className="object-cover"
@@ -38,7 +38,7 @@ export default async function AboutPage() {
           <section className="grid md:grid-cols-2 gap-8 items-center">
             <div className="relative h-[400px] rounded-xl overflow-hidden md:order-2">
               <Image
-                src="/images/about/craftsmanship.jpg"
+                src="/product.jpeg"
                 alt="Detailed jewelry work"
                 fill
                 className="object-cover"
@@ -89,7 +89,7 @@ export default async function AboutPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="relative h-[200px] rounded-xl overflow-hidden">
                 <Image
-                  src="/images/about/collection-1.jpg"
+                  src="/product.jpeg"
                   alt="Signature collection"
                   fill
                   className="object-cover"
@@ -97,7 +97,7 @@ export default async function AboutPage() {
               </div>
               <div className="relative h-[200px] rounded-xl overflow-hidden">
                 <Image
-                  src="/images/about/collection-2.jpg"
+                  src="/product.jpeg"
                   alt="Modern classics"
                   fill
                   className="object-cover"
@@ -105,7 +105,7 @@ export default async function AboutPage() {
               </div>
               <div className="relative h-[200px] rounded-xl overflow-hidden">
                 <Image
-                  src="/images/about/collection-3.jpg"
+                  src="/product.jpeg"
                   alt="Limited editions"
                   fill
                   className="object-cover"
@@ -113,7 +113,7 @@ export default async function AboutPage() {
               </div>
               <div className="relative h-[200px] rounded-xl overflow-hidden">
                 <Image
-                  src="/images/about/collection-4.jpg"
+                  src="/product.jpeg"
                   alt="Bespoke pieces"
                   fill
                   className="object-cover"
