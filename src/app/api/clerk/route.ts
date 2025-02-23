@@ -1,6 +1,7 @@
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
+import { createClient } from "@sanity/client";
 
 export async function POST(req: Request, res: Response) {
   const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
@@ -37,34 +38,55 @@ export async function POST(req: Request, res: Response) {
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
     }) as WebhookEvent;
-  } catch (err) {
-    console.error("Error: Could not verify webhook:", err);
+  } catch (error) {
+    console.error("Error: Could not verify webhook:", error);
     return new Response("Error: Verification error", {
       status: 400,
     });
   }
 
-  // check event type and do the correct thing
-  if (evt.type === "user.created") {
-    console.log(
-      `Received webhook with ID ${evt.data.id} and event type of ${evt.type}`
+  try {
+    const sanityClient = createClient({
+      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+      token: process.env.SANITY_BACKEND_TOKEN,
+      useCdn: false,
+    });
+
+    // Check if the user already exists in Sanity
+    const existingUser = await sanityClient.fetch(
+      `*[_type == "user" && clerkId == $clerkId][0]`,
+      { clerkId: evt.data.id }
     );
-    console.log("Webhook payload:", body);
-  } else if (evt.type === "user.updated") {
-    console.log(
-      `Received webhook with ID ${evt.data.id} and event type of ${evt.type}`
-    );
-    console.log("Webhook payload:", body);
-  } else if (evt.type === "user.deleted") {
-    console.log(
-      `Received webhook with ID ${evt.data.id} and event type of ${evt.type}`
-    );
-    console.log("Webhook payload:", body);
+
+    if (existingUser) {
+      console.log("User already exists in database");
+      return new Response("Webhook received, user already exists", {
+        status: 200,
+      });
+    }
+
+    if (evt.type === "user.created") {
+      await sanityClient.create({
+        _type: "user",
+        clerkId: evt.data.id,
+        email: evt.data.email_addresses[0]?.email_address || "",
+        name: evt.data.first_name + " " + evt.data.last_name,
+        phoneNumber: evt.data.phone_numbers[0].phone_number ?? "",
+      });
+
+      return new Response("User created in Sanity", { status: 201 });
+    }
+
+    console.log("Failed to create user");
+    return new Response("Webhook received", { status: 200 });
+  } catch (error) {
+    console.error("Sanity Client Error", error);
+    return new Response("Error: Sanity Client Error", {
+      status: 500,
+    });
   }
-
-  return new Response("Webhook received", { status: 200 });
 }
 
-export async function GET() {
-  return Response.json({ message: "Hello World!" });
-}
+// TODO:
+// - What happens if a user signs up but the webhook fails? The user is now signed in on the website but doesn't have a user created in the sanity db. How should I handle this?
