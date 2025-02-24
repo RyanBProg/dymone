@@ -34,7 +34,7 @@ export default function Cart() {
       </div>
       <div
         ref={menuRef}
-        className={`w-[300px] sm:w-[450px] absolute z-10 bottom-0 translate-y-full right-0 transition-all duration-500 bg-white/90 backdrop-blur-sm rounded-lg shadow ${
+        className={`sm:w-[450px] absolute z-10 bottom-0 translate-y-full left-4 sm:left-auto right-0 transition-all duration-500 bg-white/90 backdrop-blur-sm rounded-lg shadow ${
           isMenuOpen
             ? "opacity-100 -translate-x-2"
             : "opacity-0 translate-x-full"
@@ -63,7 +63,7 @@ export default function Cart() {
                       />
                     </div>
                     <div className="grow">
-                      <div className="flex">
+                      <div className="flex gap-4">
                         <span className="grow font-medium">
                           {cartItem.name}
                         </span>

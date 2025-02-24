@@ -3,14 +3,27 @@
 import { Bookmark, X } from "lucide-react";
 import { SignInButton, SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import { useMenuToggle } from "@/hooks/useMenuToggle";
-import { ReactNode } from "react";
+import Wishlist from "../wishlist/Wishlist";
+import { getSanityUserWishlist } from "@/actions/user/userActions";
+import { useEffect, useState } from "react";
 
-type Props = {
-  children: ReactNode;
-};
+export type WishlistData = Awaited<ReturnType<typeof getSanityUserWishlist>>;
 
-export default function WishlistButton({ children }: Props) {
+export default function WishlistButton() {
   const { isMenuOpen, setIsMenuOpen, menuButtonRef, menuRef } = useMenuToggle();
+  const [data, setData] = useState<WishlistData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchWishlist = async () => {
+    setIsLoading(true);
+    const wishlistData = await getSanityUserWishlist();
+    setData(wishlistData);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchWishlist();
+  }, [isMenuOpen]);
 
   return (
     <>
@@ -28,7 +41,7 @@ export default function WishlistButton({ children }: Props) {
       </div>
       <div
         ref={menuRef}
-        className={`absolute z-10 bottom-0 translate-y-full right-0 transition-all duration-300 bg-white/90 backdrop-blur-sm rounded-lg shadow ${
+        className={`sm:w-[450px] absolute z-10 bottom-0 translate-y-full left-4 sm:left-auto right-0 transition-all duration-300 bg-white/90 backdrop-blur-sm rounded-lg shadow ${
           isMenuOpen
             ? "opacity-100 -translate-x-2"
             : "opacity-0 translate-x-full"
@@ -55,7 +68,13 @@ export default function WishlistButton({ children }: Props) {
             </div>
           </div>
         </SignedOut>
-        <SignedIn>{children}</SignedIn>
+        <SignedIn>
+          <Wishlist
+            isLoading={isLoading}
+            data={data}
+            fetchWishlist={fetchWishlist}
+          />
+        </SignedIn>
       </div>
     </>
   );

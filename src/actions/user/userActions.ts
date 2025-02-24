@@ -2,7 +2,6 @@
 
 import { getUser, getUserWishlist } from "@/lib/utils/sanity/sanityQueries";
 import { sanityDevClient } from "@/sanity/lib/backendClient";
-import { sanityFetch } from "@/sanity/lib/live";
 import { currentUser } from "@clerk/nextjs/server";
 
 // User
@@ -49,9 +48,9 @@ export const getSanityUserWishlist = async () => {
   }
 };
 
-export const addItemToWishlist = async (itemId: string) => {
-  if (!itemId) {
-    throw new Error("Args not passed to function: addItemToWishlist");
+export const addItemToWishlist = async (productId: string) => {
+  if (!productId) {
+    throw new Error("Args not passed to function");
   }
 
   try {
@@ -76,16 +75,16 @@ export const addItemToWishlist = async (itemId: string) => {
         },
         products: [
           {
-            _key: `${itemId}-${new Date().getTime()}`,
+            _key: `${productId}-${new Date().getTime()}`,
             _type: "reference",
-            _ref: itemId,
+            _ref: productId,
           },
         ],
       });
     } else {
       // Check if product already exists in wishlist
       const productExists = wishlist.products?.some(
-        (product: { _ref: string }) => product._ref === itemId
+        (product: { _ref: string }) => product._ref === productId
       );
 
       if (!productExists) {
@@ -95,9 +94,9 @@ export const addItemToWishlist = async (itemId: string) => {
           .setIfMissing({ products: [] })
           .append("products", [
             {
-              _key: `${itemId}-${new Date().getTime()}`,
+              _key: `${productId}-${new Date().getTime()}`,
               _type: "reference",
-              _ref: itemId,
+              _ref: productId,
             },
           ])
           .commit();
@@ -111,25 +110,45 @@ export const addItemToWishlist = async (itemId: string) => {
   }
 };
 
-export const deleteItemFromWishlist = async (
-  userId: string,
-  itemId: string
-) => {
-  try {
-    if (!userId || !itemId) {
-      throw new Error("Args not passed to function: deleteItemFromWishlist");
-    }
-  } catch (error) {
-    console.log(error);
+export const deleteItemFromWishlist = async (productId: string) => {
+  if (!productId) {
+    throw new Error("Args not passed to function");
   }
-};
 
-export const clearWishlist = async (userId: string, itemId: string) => {
   try {
-    if (!userId || !itemId) {
-      throw new Error("Args not passed to function: clearWishlist");
+    const sanityUser = await getSanityUser();
+    if (!sanityUser.success || !sanityUser.user) {
+      throw new Error("No sanity user found");
     }
+
+    // Get user's wishlist
+    const wishlist = await sanityDevClient.fetch(
+      `*[_type == "wishlist" && user._ref == $userId][0]`,
+      { userId: sanityUser.user._id }
+    );
+
+    if (!wishlist) {
+      throw new Error("No wishlist found");
+    }
+
+    // Find the product in the wishlist
+    const productToRemove = wishlist.products?.find(
+      (product: { _ref: string }) => product._ref === productId
+    );
+
+    if (!productToRemove) {
+      throw new Error("Product not found in wishlist");
+    }
+
+    // Remove the product from the wishlist using unset
+    await sanityDevClient
+      .patch(wishlist._id)
+      .unset([`products[_ref=="${productId}"]`])
+      .commit();
+
+    return { success: true };
   } catch (error) {
-    console.log(error);
+    console.log("deleteItemFromWishlist error: ", error);
+    return { success: false };
   }
 };
