@@ -5,6 +5,7 @@ import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 import { MouseEvent, useState } from "react";
 import { addItemToWishlist } from "@/actions/user/userActions";
 import LoadingSpinner from "../common/LoadingSpinner";
+import toast from "react-hot-toast";
 
 type Props = {
   product: ALL_PRODUCTS_PREVIEWResult["products"][0];
@@ -18,16 +19,22 @@ export default function AddToWishlistButton({ product }: Props) {
     return null;
   }
 
-  const handleClick = async (e: MouseEvent<HTMLButtonElement>) => {
+  const handleAddToWishlist = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
       await addItemToWishlist(product._id);
-      // Add succes toast here
+      toast("Item Added to Wishlist", {
+        position: "top-center",
+        style: { backgroundColor: "#BCF0DA" },
+      });
     } catch (error) {
       console.error("Failed to add to wishlist:", error);
-      // add failed toast here
+      toast("Could Not Add Item to Wishlist", {
+        position: "top-center",
+        style: { backgroundColor: "#F8B4B4" },
+      });
     }
     setIsLoading(false);
   };
@@ -40,7 +47,7 @@ export default function AddToWishlistButton({ product }: Props) {
         </span>
       )}
       <button
-        onClick={handleClick}
+        onClick={handleAddToWishlist}
         disabled={isLoading}
         className={`${isLoading ? "hover:cursor-auto" : "hover:cursor-pointer hover:bg-white"} bg-white/60 flex justify-center items-center p-1 h-8 w-8 rounded-full`}>
         {isLoading ? (

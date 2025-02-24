@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { SINGLE_PRODUCT_FULLResult } from "@/lib/types";
 import { Bookmark, Plus } from "lucide-react";
 import { useCartStore } from "@/zustand/cartStore";
+import { useState } from "react";
 import { addItemToWishlist } from "@/actions/user/userActions";
+import LoadingSpinner from "../common/LoadingSpinner";
+import toast from "react-hot-toast";
 
 type Props = {
   product: SINGLE_PRODUCT_FULLResult;
@@ -13,19 +15,29 @@ type Props = {
 export default function ProductControls({ product }: Props) {
   const [quantity, setQuantity] = useState(1);
   const addToCart = useCartStore((state) => state.addToCart);
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!product) {
     return null;
   }
 
-  const addToWishlist = async () => {
+  const handleAddToWishlist = async () => {
+    setIsLoading(true);
+
     try {
       await addItemToWishlist(product._id);
-      // Add succes toast here
+      toast("Item Added to Wishlist", {
+        position: "top-center",
+        style: { backgroundColor: "#BCF0DA" },
+      });
     } catch (error) {
       console.error("Failed to add to wishlist:", error);
-      // add failed toast here
+      toast("Could Not Add Item to Wishlist", {
+        position: "top-center",
+        style: { backgroundColor: "#F8B4B4" },
+      });
     }
+    setIsLoading(false);
   };
 
   const cartItem = {
@@ -88,9 +100,14 @@ export default function ProductControls({ product }: Props) {
               ADD TO CART
             </button>
             <button
-              onClick={() => addToWishlist()}
-              className="ml-auto rounded-md flex gap-1 items-center transition-colors hover:bg-purple-100 hover:cursor-pointer px-2 py-1">
-              <Bookmark size={20} strokeWidth={1.5} />
+              onClick={handleAddToWishlist}
+              disabled={isLoading}
+              className={`${isLoading ? "hover:cursor-auto" : "hover:cursor-pointer hover:bg-purple-100"} flex justify-center items-center p-1 h-8 w-8 rounded-md`}>
+              {isLoading ? (
+                <LoadingSpinner size="sm" />
+              ) : (
+                <Bookmark size={20} strokeWidth={1.5} />
+              )}
             </button>
           </>
         )}
