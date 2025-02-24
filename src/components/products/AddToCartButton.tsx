@@ -4,6 +4,7 @@ import { useCartStore } from "@/zustand/cartStore";
 import { Plus } from "lucide-react";
 import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 import { MouseEvent } from "react";
+import toast from "react-hot-toast";
 
 type Props = {
   product: ALL_PRODUCTS_PREVIEWResult["products"][0];
@@ -26,9 +27,13 @@ export default function AddToCartButton({ product }: Props) {
     quantity: 1,
   };
 
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleAddToCart = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     addToCart(cartItem);
+    toast("Item Added to Cart", {
+      position: "top-center",
+      style: { backgroundColor: "#BCF0DA" },
+    });
   };
 
   return (
@@ -40,7 +45,7 @@ export default function AddToCartButton({ product }: Props) {
             Add to Cart
           </span>
           <button
-            onClick={handleClick}
+            onClick={handleAddToCart}
             className="bg-white/60 p-1 rounded-full hover:cursor-pointer hover:bg-white">
             <Plus strokeWidth={1.5} />
           </button>

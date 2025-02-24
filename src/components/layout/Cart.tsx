@@ -6,6 +6,7 @@ import { Minus, Plus, ShoppingBasket, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function Cart() {
   const { isMenuOpen, setIsMenuOpen, menuButtonRef, menuRef } = useMenuToggle();
@@ -30,6 +31,14 @@ export default function Cart() {
   const handleMenuToggle = () => {
     checkCartExpiry();
     setIsMenuOpen((prev) => !prev);
+  };
+
+  const handleRemoveFromCart = (id: string) => {
+    removeFromCart(id);
+    toast("Item Removed From Cart", {
+      position: "top-center",
+      style: { backgroundColor: "#BCF0DA" },
+    });
   };
 
   return (
@@ -103,7 +112,7 @@ export default function Cart() {
                           </button>
                         </div>
                         <button
-                          onClick={() => removeFromCart(cartItem.id)}
+                          onClick={() => handleRemoveFromCart(cartItem.id)}
                           className="hover:cursor-pointer hover:bg-neutral-200 py-1 px-2 text-sm bg-neutral-300 rounded-full transition-colors duration-300">
                           Remove
                         </button>

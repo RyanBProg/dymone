@@ -49,6 +49,14 @@ export default function ProductControls({ product }: Props) {
     quantity: quantity,
   };
 
+  const handleAddToCart = () => {
+    addToCart(cartItem);
+    toast("Item Added to Cart", {
+      position: "top-center",
+      style: { backgroundColor: "#BCF0DA" },
+    });
+  };
+
   return (
     <div className="m-2 md:m-0 md:absolute md:max-w-md md:right-2 md:bottom-2 grid gap-2">
       <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4">
@@ -94,7 +102,7 @@ export default function ProductControls({ product }: Props) {
         ) : (
           <>
             <button
-              onClick={() => addToCart(cartItem)}
+              onClick={handleAddToCart}
               className="rounded-md flex gap-1 items-center transition-colors hover:bg-purple-100 hover:cursor-pointer px-2 py-1">
               <Plus strokeWidth={1.5} size={18} />
               ADD TO CART
