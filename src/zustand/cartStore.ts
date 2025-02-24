@@ -21,6 +21,7 @@ type CartState = {
   clearCart: () => void;
   incrementCartItem: (id: string) => void;
   decrementCartItem: (id: string) => void;
+  checkCartExpiry: () => void;
 };
 
 const CART_EXPIRY_TIME = 30 * 60 * 1000; // 30 mins
@@ -68,6 +69,14 @@ export const useCartStore = create<CartState>()(
       },
       clearCart: () =>
         set({ cart: [], expiry: new Date().getTime() + CART_EXPIRY_TIME }),
+      checkCartExpiry: () => {
+        const now = new Date().getTime();
+        if (now > get().expiry) {
+          set({ cart: [], expiry: now + CART_EXPIRY_TIME });
+          return;
+        }
+        return;
+      },
       incrementCartItem: (id) => {
         const now = new Date().getTime();
         if (now > get().expiry) {

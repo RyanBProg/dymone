@@ -5,6 +5,7 @@ import { useCartStore } from "@/zustand/cartStore";
 import { Minus, Plus, ShoppingBasket, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Cart() {
   const { isMenuOpen, setIsMenuOpen, menuButtonRef, menuRef } = useMenuToggle();
@@ -12,13 +13,31 @@ export default function Cart() {
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const incrementCartItem = useCartStore((state) => state.incrementCartItem);
   const decrementCartItem = useCartStore((state) => state.decrementCartItem);
+  const checkCartExpiry = useCartStore((state) => state.checkCartExpiry);
+
+  useEffect(() => {
+    checkCartExpiry();
+
+    // Set up periodic checks
+    const interval = setInterval(() => {
+      checkCartExpiry();
+    }, 60000); // Check every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Check when menu opens
+  const handleMenuToggle = () => {
+    checkCartExpiry();
+    setIsMenuOpen((prev) => !prev);
+  };
 
   return (
     <>
       <div className="relative flex bg-white/70 backdrop-blur-sm shadow rounded-lg p-1">
         <button
           ref={menuButtonRef}
-          onClick={() => setIsMenuOpen((prev) => !prev)}
+          onClick={handleMenuToggle}
           className="relative hover:cursor-pointer hover:bg-purple-100 rounded-md px-2 transition-colors duration-300 inline-block">
           {isMenuOpen ? (
             <X strokeWidth={1.5} size={20} />
