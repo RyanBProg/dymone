@@ -1,9 +1,9 @@
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
-import { createClient } from "@sanity/client";
+import { sanityDevClient } from "@/sanity/lib/backendClient";
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request, _: Response) {
   const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
   if (!webhookSecret) {
     throw new Error("No CLERK_WEBHOOK_SECRET");
@@ -46,15 +46,8 @@ export async function POST(req: Request, res: Response) {
   }
 
   try {
-    const sanityClient = createClient({
-      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-      token: process.env.SANITY_BACKEND_TOKEN,
-      useCdn: false,
-    });
-
     // Check if the user already exists in Sanity
-    const existingUser = await sanityClient.fetch(
+    const existingUser = await sanityDevClient.fetch(
       `*[_type == "user" && clerkId == $clerkId][0]`,
       { clerkId: evt.data.id }
     );
@@ -67,7 +60,7 @@ export async function POST(req: Request, res: Response) {
     }
 
     if (evt.type === "user.created") {
-      await sanityClient.create({
+      await sanityDevClient.create({
         _type: "user",
         clerkId: evt.data.id,
         email: evt.data.email_addresses[0]?.email_address || "",
