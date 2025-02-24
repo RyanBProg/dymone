@@ -12,7 +12,6 @@ export const wishlistType = defineType({
       type: "reference",
       to: [{ type: "user" }],
       validation: (Rule) => Rule.required(),
-      weak: true,
     }),
     defineField({
       name: "products",
@@ -22,7 +21,6 @@ export const wishlistType = defineType({
         {
           type: "reference",
           to: [{ type: "product" }],
-          weak: true,
         },
       ],
       validation: (Rule) => Rule.unique(),

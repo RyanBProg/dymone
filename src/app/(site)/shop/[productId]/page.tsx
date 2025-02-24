@@ -2,7 +2,7 @@ import ProductGallery from "@/components/products/ProductGallery";
 import ErrorFetchingProducts from "@/components/products/ErrorFetchingProducts";
 import { getProductById } from "@/lib/utils/sanity/sanityQueries";
 import ProductDetailsDrawer from "@/components/products/ProductDetailsDrawer";
-import ProductControls from "@/components/products/toolbar/ProductControls";
+import ProductControls from "@/components/products/ProductControls";
 import { groqSafeString } from "@/lib/utils/sanity/groqSafeString";
 
 type Props = {

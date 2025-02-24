@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { SINGLE_PRODUCT_FULLResult } from "@/lib/types";
-import { Plus } from "lucide-react";
+import { Bookmark, Plus } from "lucide-react";
 import { useCartStore } from "@/zustand/cartStore";
+import { addItemToWishlist } from "@/actions/user/userActions";
 
 type Props = {
   product: SINGLE_PRODUCT_FULLResult;
@@ -16,6 +17,16 @@ export default function ProductControls({ product }: Props) {
   if (!product) {
     return null;
   }
+
+  const addToWishlist = async () => {
+    try {
+      await addItemToWishlist(product._id);
+      // Add succes toast here
+    } catch (error) {
+      console.error("Failed to add to wishlist:", error);
+      // add failed toast here
+    }
+  };
 
   const cartItem = {
     id: product._id,
@@ -63,18 +74,25 @@ export default function ProductControls({ product }: Props) {
           />
         </label>
       </div>
-      <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4">
+      <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4 flex justify-between">
         {product.stock < 1 ? (
           <span className="rounded-md flex gap-1 items-center bg-neutral-300 px-2 py-1">
             OUT OF STOCK
           </span>
         ) : (
-          <button
-            onClick={() => addToCart(cartItem)}
-            className="rounded-md flex gap-1 items-center transition-colors hover:bg-purple-100 hover:cursor-pointer px-2 py-1">
-            <Plus strokeWidth={1.5} size={18} />
-            ADD TO CART
-          </button>
+          <>
+            <button
+              onClick={() => addToCart(cartItem)}
+              className="rounded-md flex gap-1 items-center transition-colors hover:bg-purple-100 hover:cursor-pointer px-2 py-1">
+              <Plus strokeWidth={1.5} size={18} />
+              ADD TO CART
+            </button>
+            <button
+              onClick={() => addToWishlist()}
+              className="ml-auto rounded-md flex gap-1 items-center transition-colors hover:bg-purple-100 hover:cursor-pointer px-2 py-1">
+              <Bookmark size={20} strokeWidth={1.5} />
+            </button>
+          </>
         )}
       </div>
     </div>

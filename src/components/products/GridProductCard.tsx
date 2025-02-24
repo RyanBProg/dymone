@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 import AddToCartButton from "./AddToCartButton";
+import AddToWishlistButton from "./AddToWishlistButton";
 
 type Props = {
   product: ALL_PRODUCTS_PREVIEWResult["products"][0];
@@ -21,6 +22,7 @@ export default function GridProductCard({ product }: Props) {
           className="object-cover hover:scale-105 transition-transform duration-500"
           priority
         />
+        <AddToWishlistButton product={product} />
         <AddToCartButton product={product} />
       </Link>
       <div className="mt-2 grid gap-1">
