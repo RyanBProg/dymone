@@ -1,25 +1,12 @@
 "use server";
 
+import { getUser, getUserWishlist } from "@/lib/utils/sanity/sanityQueries";
 import { sanityDevClient } from "@/sanity/lib/backendClient";
+import { sanityFetch } from "@/sanity/lib/live";
 import { currentUser } from "@clerk/nextjs/server";
 
-// User details
-export const updateUserDetails = async (user: string) => {
-  try {
-    if (!user) {
-      throw new Error("Args not passed to function: updateUserDetails");
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-// Wishlist
-export const addItemToWishlist = async (itemId: string) => {
-  if (!itemId) {
-    throw new Error("Args not passed to function: addItemToWishlist");
-  }
-
+// User
+export const getSanityUser = async () => {
   try {
     // get user from clerk
     const clerkUser = await currentUser();
@@ -27,19 +14,56 @@ export const addItemToWishlist = async (itemId: string) => {
       throw new Error("User not signed in");
     }
 
-    // Check if the user exists in sanity
-    const sanityUser = await sanityDevClient.fetch(
-      `*[_type == "user" && clerkId == $clerkId][0]`,
-      { clerkId: clerkUser.id }
-    );
-    if (!sanityUser) {
-      throw new Error("User doesn't exist in Sanity");
+    const sanityUser = await getUser(clerkUser.id);
+    if (!sanityUser.success || !sanityUser.user) {
+      throw new Error("No sanity user found");
+    }
+
+    return { success: true, user: sanityUser.user };
+  } catch (error) {
+    console.log("getSanityUser error:", error);
+    return { success: false };
+  }
+};
+
+// Wishlist
+export const getSanityUserWishlist = async () => {
+  try {
+    const sanityUser = await getSanityUser();
+    if (!sanityUser.success || !sanityUser.user) {
+      throw new Error("No sanity user found");
+    }
+
+    const userWishlist = await getUserWishlist(sanityUser.user._id);
+    if (!userWishlist.success || !userWishlist.wishlist) {
+      throw new Error("No wishlist found");
+    }
+
+    return {
+      success: true,
+      wishlist: userWishlist.wishlist,
+    };
+  } catch (error) {
+    console.log("getSanityUserWishlist error: ", error);
+    return { success: false };
+  }
+};
+
+export const addItemToWishlist = async (itemId: string) => {
+  if (!itemId) {
+    throw new Error("Args not passed to function: addItemToWishlist");
+  }
+
+  try {
+    const sanityUser = await getSanityUser();
+    if (!sanityUser.success || !sanityUser.user) {
+      throw new Error("No sanity user found");
     }
 
     // Check if the user has a wishlist
     const wishlist = await sanityDevClient.fetch(
       `*[_type == "wishlist" && user._ref == $userId][0]`,
-      { userId: sanityUser._id }
+      { userId: sanityUser.user._id }
     );
 
     if (!wishlist) {
@@ -48,7 +72,7 @@ export const addItemToWishlist = async (itemId: string) => {
         _type: "wishlist",
         user: {
           _type: "reference",
-          _ref: sanityUser._id,
+          _ref: sanityUser.user._id,
         },
         products: [
           {
@@ -82,7 +106,7 @@ export const addItemToWishlist = async (itemId: string) => {
 
     return { success: true };
   } catch (error) {
-    console.log("AddItemToWishlist error:", error);
+    console.log("AddItemToWishlist error: ", error);
     return { success: false };
   }
 };

@@ -42,7 +42,7 @@ export default function Cart() {
         <div className="bg-white rounded-lg p-4">
           <p className="tracking-tighter font-medium">CART</p>
         </div>
-        <ul className="flex flex-col gap-4 p-4">
+        <ul className="flex flex-col gap-4 p-4 max-h-[400px] overflow-y-scroll">
           {cartItems.length < 1 ? (
             <p className="text-neutral-600 text-sm text-center">
               NO ITEMS IN YOUR CART
@@ -67,7 +67,7 @@ export default function Cart() {
                         <span className="grow font-medium">
                           {cartItem.name}
                         </span>
-                        <span>${cartItem.price}</span>
+                        <span>${cartItem.discountPrice ?? cartItem.price}</span>
                       </div>
                       <div className="flex mt-2">
                         <div className="grow flex gap-3">

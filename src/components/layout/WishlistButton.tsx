@@ -3,8 +3,13 @@
 import { Bookmark, X } from "lucide-react";
 import { SignInButton, SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import { useMenuToggle } from "@/hooks/useMenuToggle";
+import { ReactNode } from "react";
 
-export default function WishlistButton() {
+type Props = {
+  children: ReactNode;
+};
+
+export default function WishlistButton({ children }: Props) {
   const { isMenuOpen, setIsMenuOpen, menuButtonRef, menuRef } = useMenuToggle();
 
   return (
@@ -23,13 +28,16 @@ export default function WishlistButton() {
       </div>
       <div
         ref={menuRef}
-        className={`absolute z-10 bottom-0 translate-y-full right-0 transition-all duration-300 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow ${
+        className={`absolute z-10 bottom-0 translate-y-full right-0 transition-all duration-300 bg-white/90 backdrop-blur-sm rounded-lg shadow ${
           isMenuOpen
             ? "opacity-100 -translate-x-2"
             : "opacity-0 translate-x-full"
         }`}>
+        <div className="bg-white rounded-lg p-4">
+          <p className="tracking-tighter font-medium">WISHLIST</p>
+        </div>
         <SignedOut>
-          <div className="grid gap-2">
+          <div className="grid gap-2 p-4">
             <p className="text-sm p-2 text-neutral-700">
               Sign in to see your wishlist
             </p>
@@ -47,9 +55,7 @@ export default function WishlistButton() {
             </div>
           </div>
         </SignedOut>
-        <SignedIn>
-          <p className="text-sm p-2 text-neutral-700">Wishlist is empty</p>
-        </SignedIn>
+        <SignedIn>{children}</SignedIn>
       </div>
     </>
   );

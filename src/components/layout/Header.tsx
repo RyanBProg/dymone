@@ -3,6 +3,7 @@ import NavMenu from "./NavMenu";
 import Cart from "./Cart";
 import AccountButton from "./AccountButton";
 import WishlistButton from "./WishlistButton";
+import Wishlist from "../wishlist/Wishlist";
 
 export default async function Header() {
   return (
@@ -20,7 +21,9 @@ export default async function Header() {
       </div>
 
       <div className="flex gap-2">
-        <WishlistButton />
+        <WishlistButton>
+          <Wishlist />
+        </WishlistButton>
         <AccountButton />
         <Cart />
       </div>

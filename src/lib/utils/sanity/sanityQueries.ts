@@ -162,3 +162,60 @@ export const getFilteredProductsPreview = async (
     return null;
   }
 };
+
+export const getUserWishlist = async (userId: string) => {
+  if (!userId) {
+    throw new Error("No userId provided");
+  }
+
+  const USER_WISHLIST = defineQuery(
+    `*[_type == "wishlist" && user._ref == $userId]{
+    user,
+    "products": products[] -> {
+      _id,
+      name,
+      price,
+      discountPrice,
+      "image": { "alt": images[0].alt, "url": images[0].asset->url },
+      },
+    }[0]`
+  );
+
+  try {
+    const { data } = await sanityFetch({
+      query: USER_WISHLIST,
+      params: { userId },
+    });
+
+    return { success: true, wishlist: data };
+  } catch (error) {
+    console.error("getUserWishlist: ", error);
+    return { success: false };
+  }
+};
+
+export const getUser = async (clerkUserId: string) => {
+  if (!clerkUserId) {
+    throw new Error("No clerkUserId provided");
+  }
+
+  const GET_USER = defineQuery(
+    `*[_type == "user" && clerkId == $clerkUserId][0]`
+  );
+
+  try {
+    const { data } = await sanityFetch({
+      query: GET_USER,
+      params: { clerkUserId },
+    });
+
+    if (!data) {
+      throw new Error("No user found");
+    }
+
+    return { success: true, user: data };
+  } catch (error) {
+    console.error("getUser: ", error);
+    return { success: false };
+  }
+};
