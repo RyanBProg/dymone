@@ -2,6 +2,7 @@
 
 import { getUser, getUserWishlist } from "@/lib/utils/sanity/sanityQueries";
 import { sanityDevClient } from "@/sanity/lib/backendClient";
+import { UserDetailsSchema } from "@/zod/userDetailsSchema";
 import { currentUser } from "@clerk/nextjs/server";
 
 // User
@@ -21,6 +22,35 @@ export const getSanityUser = async () => {
     return { success: true, user: sanityUser.user };
   } catch (error) {
     console.log("getSanityUser error:", error);
+    return { success: false };
+  }
+};
+
+export const updateUserDetails = async (formData: UserDetailsSchema) => {
+  try {
+    const sanityUser = await getSanityUser();
+    if (!sanityUser.success || !sanityUser.user) {
+      throw new Error("No sanity user found");
+    }
+
+    const sanityData = {
+      name: formData.name,
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      address: {
+        street: formData.street,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.postcode,
+        country: formData.country,
+      },
+    };
+
+    await sanityDevClient.patch(sanityUser.user._id).set(sanityData).commit();
+
+    return { success: true };
+  } catch (error) {
+    console.error("UpdateUserDetails error:", error);
     return { success: false };
   }
 };

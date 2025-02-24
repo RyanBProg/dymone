@@ -60,17 +60,17 @@ export default function AccountButton() {
           <ul className="flex flex-col gap-2 items-end">
             <li>
               <Link
-                href="#"
+                href="/user/orders"
                 onClick={() => setIsMenuOpen(false)}
-                className={`${pathName === "/orders" ? "font-bold bg-white" : "font-medium"}  inline-block tracking-tighter rounded-md py-1.5 px-2 transition-colors duration-300 hover:cursor-pointer hover:bg-purple-100`}>
+                className="font-medium inline-block tracking-tighter rounded-md py-1.5 px-2 transition-colors duration-300 hover:cursor-pointer hover:bg-purple-100">
                 ORDERS
               </Link>
             </li>
             <li>
               <Link
-                href="#"
+                href="/user/account"
                 onClick={() => setIsMenuOpen(false)}
-                className={`${pathName === "/account" ? "font-bold bg-white" : "font-medium"}  inline-block tracking-tighter rounded-md py-1.5 px-2 transition-colors duration-300 hover:cursor-pointer hover:bg-purple-100`}>
+                className="font-medium inline-block tracking-tighter rounded-md py-1.5 px-2 transition-colors duration-300 hover:cursor-pointer hover:bg-purple-100">
                 MY ACCOUNT
               </Link>
             </li>
