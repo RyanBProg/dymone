@@ -1,17 +1,7 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export default async function page() {
-  const user = await currentUser();
-  if (!user) {
-    redirect("/");
-  }
-
-  // use clerk userId to search order accosiatied with that id
-  //
-
   const orders: string[] = [];
 
   return (
@@ -21,7 +11,7 @@ export default async function page() {
       </h1>
       <div>
         {orders.length ? (
-          orders.map((order) => <>order</>)
+          orders.map((order) => <span key={order}>order</span>)
         ) : (
           <div className="flex flex-col items-center gap-10 mt-20">
             <p className="text-lg font-medium text-neutral-500">

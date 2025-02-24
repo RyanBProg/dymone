@@ -56,8 +56,8 @@ export default function page() {
           </h2>
           <p>
             Once your order has been shipped, you will receive a tracking number
-            via email. Use this number to track your package's progress until it
-            is delivered.
+            via email. Use this number to track your package&apos;s progress
+            until it is delivered.
           </p>
 
           <h2 className="text-2xl font-semibold text-black">

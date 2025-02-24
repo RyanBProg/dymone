@@ -13,9 +13,9 @@ export default function page() {
 
         <section className="space-y-6">
           <p>
-            This Privacy Policy explains how DYMONÉ ("we", "us", or "our")
-            collects, uses, and safeguards your personal information when you
-            visit our website.
+            This Privacy Policy explains how DYMONÉ (&quot;we&quot;,
+            &quot;us&quot;, or &quot;our&quot;) collects, uses, and safeguards
+            your personal information when you visit our website.
           </p>
 
           <h2 className="text-2xl font-semibold text-black">

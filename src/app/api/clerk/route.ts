@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { Webhook } from "svix";
 import { sanityDevClient } from "@/sanity/lib/backendClient";
 
-export async function POST(req: Request, _: Response) {
+export async function POST(req: Request) {
   const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
   if (!webhookSecret) {
     throw new Error("No CLERK_WEBHOOK_SECRET");

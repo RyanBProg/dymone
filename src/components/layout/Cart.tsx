@@ -25,7 +25,7 @@ export default function Cart() {
     }, 60000); // Check every minute
 
     return () => clearInterval(interval);
-  }, []);
+  }, [checkCartExpiry]);
 
   // Check when menu opens
   const handleMenuToggle = () => {

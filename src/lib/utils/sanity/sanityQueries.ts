@@ -9,6 +9,7 @@ import {
   ALL_PRODUCTS_PREVIEWResult,
   SINGLE_PRODUCT_FULLResult,
 } from "@/lib/types";
+import { CartItem } from "@/zustand/cartStore";
 
 export const getAllProductCategories = async (): Promise<
   CATEGORIES_QUERYResult | []
@@ -164,24 +165,24 @@ export const getFilteredProductsPreview = async (
 };
 
 export const getUserWishlist = async (userId: string) => {
-  if (!userId) {
-    throw new Error("No userId provided");
-  }
-
-  const USER_WISHLIST = defineQuery(
-    `*[_type == "wishlist" && user._ref == $userId]{
-    user,
-    "products": products[] -> {
-      _id,
-      name,
-      price,
-      discountPrice,
-      "image": { "alt": images[0].alt, "url": images[0].asset->url },
-      },
-    }[0]`
-  );
-
   try {
+    if (!userId) {
+      throw new Error("No userId provided");
+    }
+
+    const USER_WISHLIST = defineQuery(
+      `*[_type == "wishlist" && user._ref == $userId]{
+      user,
+      "products": products[] -> {
+        _id,
+        name,
+        price,
+        discountPrice,
+        "image": { "alt": images[0].alt, "url": images[0].asset->url },
+        },
+      }[0]`
+    );
+
     const { data } = await sanityFetch({
       query: USER_WISHLIST,
       params: { userId },
@@ -195,15 +196,15 @@ export const getUserWishlist = async (userId: string) => {
 };
 
 export const getUser = async (clerkUserId: string) => {
-  if (!clerkUserId) {
-    throw new Error("No clerkUserId provided");
-  }
-
-  const GET_USER = defineQuery(
-    `*[_type == "user" && clerkId == $clerkUserId][0]`
-  );
-
   try {
+    if (!clerkUserId) {
+      throw new Error("No clerkUserId provided");
+    }
+
+    const GET_USER = defineQuery(
+      `*[_type == "user" && clerkId == $clerkUserId][0]`
+    );
+
     const { data } = await sanityFetch({
       query: GET_USER,
       params: { clerkUserId },
@@ -216,6 +217,17 @@ export const getUser = async (clerkUserId: string) => {
     return { success: true, user: data };
   } catch (error) {
     console.error("getUser: ", error);
+    return { success: false };
+  }
+};
+
+export const checkCartStock = async (cart: CartItem[]) => {
+  try {
+    if (!cart || !cart.length) {
+      throw new Error("No cart provided");
+    }
+  } catch (error) {
+    console.error("checkCartStock: ", error);
     return { success: false };
   }
 };

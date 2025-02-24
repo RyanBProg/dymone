@@ -13,8 +13,9 @@ export default function page() {
 
         <section className="space-y-6">
           <p>
-            This Cookie Policy explains how DYMONÉ ("we", "us", or "our") uses
-            cookies and similar tracking technologies on our website.
+            This Cookie Policy explains how DYMONÉ (&quot;we&quot;,
+            &quot;us&quot;, or &quot;our&quot;) uses cookies and similar
+            tracking technologies on our website.
           </p>
 
           <h2 className="text-2xl font-semibold text-black">

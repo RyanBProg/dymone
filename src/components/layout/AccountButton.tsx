@@ -10,11 +10,9 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import { useMenuToggle } from "@/hooks/useMenuToggle";
-import { usePathname } from "next/navigation";
 
 export default function AccountButton() {
   const { isMenuOpen, setIsMenuOpen, menuButtonRef, menuRef } = useMenuToggle();
-  const pathName = usePathname();
 
   return (
     <>
