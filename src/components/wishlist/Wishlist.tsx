@@ -38,7 +38,7 @@ export default function Wishlist({ isLoading, data, fetchWishlist }: Props) {
 
   return (
     <ul className="grid gap-4 max-h-[400px] overflow-y-scroll p-4">
-      {data.wishlist?.products.map((item) => (
+      {data.wishlist.products.map((item) => (
         <li key={item.name}>
           <div className="relative flex gap-4">
             <div className="h-16 w-16 bg-neutral-300 rounded-md overflow-clip flex justify-center items-center">

@@ -564,7 +564,7 @@ export type ALL_PRODUCTS_PREVIEWResult = {
   }>;
 };
 // Variable: USER_WISHLIST
-// Query: *[_type == "wishlist" && user._ref == $userId]{    user,    "products": products[] -> {      _id,      name,      price,      discountPrice,      "image": { "alt": images[0].alt, "url": images[0].asset->url },      },    }[0]
+// Query: *[_type == "wishlist" && user._ref == $userId]{      user,      "products": products[] -> {        _id,        name,        price,        discountPrice,        "image": { "alt": images[0].alt, "url": images[0].asset->url },        },      }[0]
 export type USER_WISHLISTResult = {
   user: {
     _ref: string;
@@ -613,7 +613,7 @@ declare module "@sanity/client" {
     "\n    *[_type == \"stone\"] {\n      _id,\n      name,\n      description,\n      \"slug\": slug.current\n    } | order(name asc)\n  ": STONES_QUERYResult;
     "*[_type == \"product\" && _id == $productId]{\n    _id,\n    sku,\n    \"slug\": slug.current,\n    name,\n    \"images\": images[]{ \"alt\": alt, \"url\": asset->url },\n    description,\n    price,\n    discountPrice,\n    gender,\n    productCategory -> {_id, name},\n    material -> {_id, name, description},\n    stone -> {_id, name, description},\n    stock,\n    weight,\n    _updatedAt,\n    _createdAt,\n    isFeatured\n    }[0]": SINGLE_PRODUCT_FULLResult;
     "{\n    \"total\": count(*[_type == \"product\"]),\n    \"products\": *[_type == \"product\"]\n      {\n        _id,\n        sku,\n        \"slug\": slug.current,\n        name,\n        \"image\": { \"alt\": images[0].alt, \"url\": images[0].asset->url },\n        price,\n        discountPrice,\n        gender,\n        productCategory,\n        material,\n        stone,\n        stock,\n        _updatedAt,\n        _createdAt,\n        isFeatured\n      } | order(price asc)\n    }": ALL_PRODUCTS_PREVIEWResult;
-    "*[_type == \"wishlist\" && user._ref == $userId]{\n    user,\n    \"products\": products[] -> {\n      _id,\n      name,\n      price,\n      discountPrice,\n      \"image\": { \"alt\": images[0].alt, \"url\": images[0].asset->url },\n      },\n    }[0]": USER_WISHLISTResult;
+    "*[_type == \"wishlist\" && user._ref == $userId]{\n      user,\n      \"products\": products[] -> {\n        _id,\n        name,\n        price,\n        discountPrice,\n        \"image\": { \"alt\": images[0].alt, \"url\": images[0].asset->url },\n        },\n      }[0]": USER_WISHLISTResult;
     "*[_type == \"user\" && clerkId == $clerkUserId][0]": GET_USERResult;
   }
 }
