@@ -5,12 +5,14 @@ import { useCartStore } from "@/zustand/cartStore";
 import { ChevronLeft, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const cartItems = useCartStore((state) => state.cart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const incrementCartItem = useCartStore((state) => state.incrementCartItem);
   const decrementCartItem = useCartStore((state) => state.decrementCartItem);
+  const router = useRouter();
 
   const subTotal = cartItems
     .map((item) => {
@@ -21,6 +23,31 @@ export default function Home() {
     .reduce((count, price) => {
       return count + price;
     }, 0);
+
+  const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("/api/checkout_sessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartItems),
+      });
+
+      const { url, error } = await response.json();
+
+      if (error) {
+        console.error("Error:", error);
+        return;
+      }
+
+      router.push(url);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <main className="my-20 px-4 flex justify-center">
@@ -133,10 +160,9 @@ export default function Home() {
             </div>
           </SignedOut>
           <SignedIn>
-            <form action="/api/checkout_sessions" method="POST">
+            <form onSubmit={handleCheckout}>
               <button
                 type="submit"
-                role="link"
                 className="w-full tracking-tighter font-medium text-lg rounded-md bg-purple-100 px-10 py-1.5 hover:cursor-pointer hover:bg-purple-200 transition-colors duration-300">
                 ORDER
               </button>

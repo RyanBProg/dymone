@@ -51,5 +51,38 @@ export const orderType = defineType({
         list: ["pending", "paid", "failed", "refunded"],
       },
     }),
+    defineField({
+      name: "shippingAddress",
+      title: "Shipping Address",
+      type: "object",
+      fields: [
+        {
+          name: "street",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: "city",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: "state",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: "zipCode",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: "country",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        },
+      ],
+      validation: (Rule) => Rule.required(),
+    }),
   ],
 });
