@@ -12,11 +12,15 @@ export default function Home() {
   const incrementCartItem = useCartStore((state) => state.incrementCartItem);
   const decrementCartItem = useCartStore((state) => state.decrementCartItem);
 
-  const subTotal = cartItems.reduce((count, item) => {
-    return !item.discountPrice
-      ? count + item.price
-      : count + item.discountPrice;
-  }, 0);
+  const subTotal = cartItems
+    .map((item) => {
+      return item.discountPrice
+        ? item.discountPrice * item.quantity
+        : item.price * item.quantity;
+    })
+    .reduce((count, price) => {
+      return count + price;
+    }, 0);
 
   return (
     <main className="my-20 px-4 flex justify-center">
