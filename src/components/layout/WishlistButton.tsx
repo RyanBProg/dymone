@@ -50,8 +50,8 @@ export default function WishlistButton() {
           <p className="tracking-tighter font-medium">WISHLIST</p>
         </div>
         <SignedOut>
-          <div className="grid gap-2 p-4">
-            <p className="text-sm p-2 text-neutral-700">
+          <div className="flex flex-col gap-2 p-4">
+            <p className="text-sm p-2 text-neutral-700 text-center w-full mb-5">
               Sign in to see your wishlist
             </p>
             <div className="flex gap-2">

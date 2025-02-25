@@ -23,15 +23,23 @@ export default function AddToWishlistButton({ product }: Props) {
     e.preventDefault();
     setIsLoading(true);
 
+    let errorMessage = "";
+
     try {
-      await addItemToWishlist(product._id);
+      const result = await addItemToWishlist(product._id);
+      console.log(result);
+      if (!result.success) {
+        errorMessage = "Sign in to Add to Wishlist";
+        throw new Error("Failed to add item to wishlist");
+      }
+
       toast("Item Added to Wishlist", {
         position: "top-center",
         style: { backgroundColor: "#BCF0DA" },
       });
     } catch (error) {
       console.error("Failed to add to wishlist:", error);
-      toast("Could Not Add Item to Wishlist", {
+      toast(errorMessage || "Could Not Add Item to Wishlist", {
         position: "top-center",
         style: { backgroundColor: "#F8B4B4" },
       });
