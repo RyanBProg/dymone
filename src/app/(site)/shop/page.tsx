@@ -22,35 +22,35 @@ type Props = {
 export default async function Home({ searchParams }: Props) {
   const params = await searchParams;
 
-  const [categories, materials, stones] = await Promise.all([
+  const [categoriesData, materialsData, stonesData] = await Promise.all([
     getAllProductCategories(),
     getAllProductMaterials(),
     getAllProductStones(),
   ]);
 
-  if (!categories || !categories.length) {
+  if (!categoriesData.success || !categoriesData.categories?.length) {
     console.error("No categories list found");
     return <ErrorFetchingProducts />;
   }
-  if (!materials || !materials.length) {
+  if (!materialsData.success || !materialsData.materials?.length) {
     console.error("No materials list found");
     return <ErrorFetchingProducts />;
   }
-  if (!stones || !stones.length) {
+  if (!stonesData.success || !stonesData.stones?.length) {
     console.error("No stones list found");
     return <ErrorFetchingProducts />;
   }
 
   const PRODUCTS_QUERY = productQueryBuilder(
     params,
-    categories,
-    materials,
-    stones
+    categoriesData.categories,
+    materialsData.materials,
+    stonesData.stones
   );
 
   const productsPreviewData = await getFilteredProductsPreview(PRODUCTS_QUERY);
 
-  if (!productsPreviewData) {
+  if (!productsPreviewData.success || !productsPreviewData.products) {
     console.log("Error fetching product data");
     return <ErrorFetchingProducts />;
   }
@@ -58,11 +58,11 @@ export default async function Home({ searchParams }: Props) {
   return (
     <main className="my-20">
       <ProductToolbar
-        categories={categories}
-        materials={materials}
-        stones={stones}
+        categories={categoriesData.categories}
+        materials={materialsData.materials}
+        stones={stonesData.stones}
       />
-      <ProductGrid productsPreviewData={productsPreviewData} />
+      <ProductGrid productsPreviewData={productsPreviewData.products} />
     </main>
   );
 }

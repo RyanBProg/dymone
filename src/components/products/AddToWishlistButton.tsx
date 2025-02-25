@@ -1,11 +1,11 @@
 "use client";
 
 import { Bookmark } from "lucide-react";
-import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 import { MouseEvent, useState } from "react";
 import { addItemToWishlist } from "@/actions/user/userActions";
 import LoadingSpinner from "../common/LoadingSpinner";
 import toast from "react-hot-toast";
+import { ALL_PRODUCTS_PREVIEWResult } from "../../../sanity.types";
 
 type Props = {
   product: ALL_PRODUCTS_PREVIEWResult["products"][0];

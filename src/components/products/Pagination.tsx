@@ -2,7 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
+import { ALL_PRODUCTS_PREVIEWResult } from "../../../sanity.types";
 
 type Props = {
   productsPreviewData: ALL_PRODUCTS_PREVIEWResult;

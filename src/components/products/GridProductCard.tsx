@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 import AddToCartButton from "./AddToCartButton";
 import AddToWishlistButton from "./AddToWishlistButton";
+import { ALL_PRODUCTS_PREVIEWResult } from "../../../sanity.types";
 
 type Props = {
   product: ALL_PRODUCTS_PREVIEWResult["products"][0];
@@ -15,7 +15,7 @@ export default function GridProductCard({ product }: Props) {
         href={`/shop/${product._id}`}
         className="block relative h-[400px] w-full overflow-clip rounded-3xl">
         <Image
-          src={product.image.url}
+          src={product.image.url!}
           alt={product.image.alt || "product image"}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

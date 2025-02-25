@@ -7,7 +7,7 @@ import {
   CATEGORIES_QUERYResult,
   MATERIALS_QUERYResult,
   STONES_QUERYResult,
-} from "@/lib/types";
+} from "../../../../sanity.types";
 
 type Props = {
   categories: CATEGORIES_QUERYResult;

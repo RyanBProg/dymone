@@ -1,8 +1,8 @@
 import React from "react";
 import GridProductCard from "./GridProductCard";
-import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 import Pagination from "./Pagination";
 import NoProducts from "./NoProducts";
+import { ALL_PRODUCTS_PREVIEWResult } from "../../../sanity.types";
 
 type Props = {
   productsPreviewData: ALL_PRODUCTS_PREVIEWResult;

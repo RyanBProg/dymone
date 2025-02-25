@@ -1,11 +1,11 @@
-import ProductFilterModal from "./ProductFilterModal";
-import ProductSort from "./ProductSort";
-import Searchbar from "./Searchbar";
 import {
   CATEGORIES_QUERYResult,
   MATERIALS_QUERYResult,
   STONES_QUERYResult,
-} from "@/lib/types";
+} from "../../../../sanity.types";
+import ProductFilterModal from "./ProductFilterModal";
+import ProductSort from "./ProductSort";
+import Searchbar from "./Searchbar";
 
 type Props = {
   categories: CATEGORIES_QUERYResult;

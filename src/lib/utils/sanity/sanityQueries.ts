@@ -2,19 +2,12 @@
 
 import { sanityFetch } from "@/sanity/lib/live";
 import { defineQuery } from "next-sanity";
-import {
-  CATEGORIES_QUERYResult,
-  MATERIALS_QUERYResult,
-  STONES_QUERYResult,
-  ALL_PRODUCTS_PREVIEWResult,
-  SINGLE_PRODUCT_FULLResult,
-} from "@/lib/types";
 import { CartItem } from "@/zustand/cartStore";
+import { ALL_PRODUCTS_PREVIEWResult } from "../../../../sanity.types";
 
-export const getAllProductCategories = async (): Promise<
-  CATEGORIES_QUERYResult | []
-> => {
-  const CATEGORIES_QUERY = defineQuery(`
+export const getAllProductCategories = async () => {
+  try {
+    const CATEGORIES_QUERY = defineQuery(`
     *[_type == "productCategory"] {
       _id,
       name,
@@ -22,19 +15,21 @@ export const getAllProductCategories = async (): Promise<
     } | order(name asc)
   `);
 
-  try {
-    const categories = await sanityFetch({ query: CATEGORIES_QUERY });
-    return categories.data || [];
+    const { data } = await sanityFetch({ query: CATEGORIES_QUERY });
+    if (!data) {
+      throw new Error("No categories found");
+    }
+
+    return { success: true, categories: data };
   } catch (error) {
-    console.error("Fetch failed:", error);
-    return [];
+    console.error("getAllProductCategories: ", error);
+    return { success: false };
   }
 };
 
-export const getAllProductMaterials = async (): Promise<
-  MATERIALS_QUERYResult | []
-> => {
-  const MATERIALS_QUERY = defineQuery(`
+export const getAllProductMaterials = async () => {
+  try {
+    const MATERIALS_QUERY = defineQuery(`
     *[_type == "material"] {
       _id,
       name,
@@ -43,19 +38,21 @@ export const getAllProductMaterials = async (): Promise<
     } | order(name asc)
   `);
 
-  try {
-    const materials = await sanityFetch({ query: MATERIALS_QUERY });
-    return materials.data || [];
+    const { data } = await sanityFetch({ query: MATERIALS_QUERY });
+    if (!data) {
+      throw new Error("No materials found");
+    }
+
+    return { success: true, materials: data };
   } catch (error) {
-    console.error("Fetch failed:", error);
-    return [];
+    console.error("getAllProductMaterials: ", error);
+    return { success: false };
   }
 };
 
-export const getAllProductStones = async (): Promise<
-  STONES_QUERYResult | []
-> => {
-  const STONES_QUERY = defineQuery(`
+export const getAllProductStones = async () => {
+  try {
+    const STONES_QUERY = defineQuery(`
     *[_type == "stone"] {
       _id,
       name,
@@ -64,25 +61,26 @@ export const getAllProductStones = async (): Promise<
     } | order(name asc)
   `);
 
-  try {
-    const stones = await sanityFetch({ query: STONES_QUERY });
-    return stones.data || [];
+    const { data } = await sanityFetch({ query: STONES_QUERY });
+    if (!data) {
+      throw new Error("No stones found");
+    }
+
+    return { success: true, stones: data };
   } catch (error) {
-    console.error("Fetch failed:", error);
-    return [];
+    console.error("getAllProductStones: ", error);
+    return { success: false };
   }
 };
 
-export const getProductById = async (
-  productId: string
-): Promise<SINGLE_PRODUCT_FULLResult | null> => {
-  if (!productId) {
-    console.log("getProductById: No productId provided");
-    return null;
-  }
+export const getProductById = async (productId: string) => {
+  try {
+    if (!productId) {
+      throw new Error("No productId provided");
+    }
 
-  const SINGLE_PRODUCT_FULL =
-    defineQuery(`*[_type == "product" && _id == $productId]{
+    const SINGLE_PRODUCT_FULL =
+      defineQuery(`*[_type == "product" && _id == $productId]{
     _id,
     sku,
     "slug": slug.current,
@@ -102,20 +100,23 @@ export const getProductById = async (
     isFeatured
     }[0]`);
 
-  try {
-    const product = await sanityFetch({
+    const { data } = await sanityFetch({
       query: SINGLE_PRODUCT_FULL,
       params: { productId },
     });
-    return product.data || null;
+    if (!data) {
+      throw new Error("No product found");
+    }
+
+    return { success: true, product: data };
   } catch (error) {
-    console.error("Fetch failed:", error);
-    return null;
+    console.error("getProductById: ", error);
+    return { success: false };
   }
 };
 
-export const getAllProducts =
-  async (): Promise<ALL_PRODUCTS_PREVIEWResult | null> => {
+export const getAllProducts = async () => {
+  try {
     const ALL_PRODUCTS_PREVIEW = defineQuery(`{
     "total": count(*[_type == "product"]),
     "products": *[_type == "product"]
@@ -138,29 +139,35 @@ export const getAllProducts =
       } | order(price asc)
     }`);
 
-    try {
-      const products = await sanityFetch({ query: ALL_PRODUCTS_PREVIEW });
-      return products.data;
-    } catch (error) {
-      console.error("Fetch failed:", error);
-      return null;
+    const { data } = await sanityFetch({ query: ALL_PRODUCTS_PREVIEW });
+    if (!data) {
+      throw new Error("No products found");
     }
-  };
+
+    return { success: true, products: data };
+  } catch (error) {
+    console.error("getAllProducts: ", error);
+    return { success: false };
+  }
+};
 
 export const getFilteredProductsPreview = async (
   PRODUCTS_QUERY: string
-): Promise<ALL_PRODUCTS_PREVIEWResult | null> => {
-  if (!PRODUCTS_QUERY) {
-    console.log("getFilteredProductsPreview: No PRODUCTS_QUERY provided");
-    return null;
-  }
-
+): Promise<{ success: boolean; products?: ALL_PRODUCTS_PREVIEWResult }> => {
   try {
-    const products = await sanityFetch({ query: PRODUCTS_QUERY });
-    return products.data;
+    if (!PRODUCTS_QUERY) {
+      throw new Error("No PRODUCTS_QUERY provided");
+    }
+
+    const { data } = await sanityFetch({ query: PRODUCTS_QUERY });
+    if (!data) {
+      throw new Error("No products found");
+    }
+
+    return { success: true, products: data };
   } catch (error) {
-    console.error("Fetch failed:", error);
-    return null;
+    console.error("getFilteredProductsPreview: ", error);
+    return { success: false };
   }
 };
 

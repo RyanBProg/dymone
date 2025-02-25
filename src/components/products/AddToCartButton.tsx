@@ -2,9 +2,9 @@
 
 import { useCartStore } from "@/zustand/cartStore";
 import { Plus } from "lucide-react";
-import { ALL_PRODUCTS_PREVIEWResult } from "@/lib/types";
 import { MouseEvent } from "react";
 import toast from "react-hot-toast";
+import { ALL_PRODUCTS_PREVIEWResult } from "../../../sanity.types";
 
 type Props = {
   product: ALL_PRODUCTS_PREVIEWResult["products"][0];
@@ -20,9 +20,9 @@ export default function AddToCartButton({ product }: Props) {
 
   const cartItem = {
     id: product._id,
-    name: product.name,
-    price: product.price,
-    image: product.image,
+    name: product.name!,
+    price: product.price!,
+    image: { url: product.image!.url!, alt: product.image!.alt! },
     discountPrice: product.discountPrice,
     quantity: 1,
   };
