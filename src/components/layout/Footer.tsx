@@ -6,7 +6,7 @@ export default function Footer() {
   // Add correct Link hrefs
 
   return (
-    <footer className="bg-black text-gray-300 py-10 px-10">
+    <footer className="mt-auto bg-black text-gray-300 py-10 px-10">
       <div className="flex flex-col md:flex-row justify-between gap-8">
         {/* Quick Links */}
         <div className="flex flex-col space-y-2">

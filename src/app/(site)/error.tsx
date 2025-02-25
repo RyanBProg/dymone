@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Error({ error }: { error: Error }) {
   return (
-    <div className="h-screen w-screen flex justify-center items-center">
+    <main className="h-screen w-screen flex justify-center items-center">
       <span className="leading-24 absolute top-0 left-0 text-[25vw] tracking-tighter font-extrabold text-black/5">
         DYMONÉ
       </span>
@@ -35,6 +35,6 @@ export default function Error({ error }: { error: Error }) {
           </Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
