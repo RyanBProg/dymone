@@ -2,7 +2,7 @@
 
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { SINGLE_PRODUCT_FULLResult } from "@/lib/types";
+import { SINGLE_PRODUCT_FULLResult } from "../../../sanity.types";
 
 type Props = {
   product: SINGLE_PRODUCT_FULLResult;

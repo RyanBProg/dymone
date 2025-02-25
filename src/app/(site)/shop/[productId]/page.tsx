@@ -23,7 +23,7 @@ export default async function page({ params }: Props) {
   return (
     <main>
       <section className="relative flex flex-col">
-        <ProductGallery images={productData.product.images} />
+        <ProductGallery images={productData.product.images!} />
         <ProductControls product={productData.product} />
       </section>
       <section className="px-4 my-10 md:my-20 flex flex-col gap-10 justify-between md:flex-row">

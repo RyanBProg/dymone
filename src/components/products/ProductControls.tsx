@@ -1,12 +1,12 @@
 "use client";
 
-import { SINGLE_PRODUCT_FULLResult } from "@/lib/types";
 import { Bookmark, Plus } from "lucide-react";
 import { useCartStore } from "@/zustand/cartStore";
 import { useState } from "react";
 import { addItemToWishlist } from "@/actions/user/userActions";
 import LoadingSpinner from "../common/LoadingSpinner";
 import toast from "react-hot-toast";
+import { SINGLE_PRODUCT_FULLResult } from "../../../sanity.types";
 
 type Props = {
   product: SINGLE_PRODUCT_FULLResult;
@@ -42,9 +42,9 @@ export default function ProductControls({ product }: Props) {
 
   const cartItem = {
     id: product._id,
-    name: product.name,
-    price: product.price,
-    image: product.images[0],
+    name: product.name!,
+    price: product.price!,
+    image: { url: product.images![0].url!, alt: product.images![0].alt },
     discountPrice: product.discountPrice,
     quantity: quantity,
   };
@@ -89,13 +89,13 @@ export default function ProductControls({ product }: Props) {
             className="border border-gray-400 rounded-md block w-16 px-2 py-1"
             onChange={(e) => setQuantity(parseInt(e.target.value))}
             value={quantity}
-            max={product.stock}
+            max={product.stock!}
             required
           />
         </label>
       </div>
       <div className="bg-white/70 backdrop-blur-sm shadow rounded-lg p-4 flex justify-between">
-        {product.stock < 1 ? (
+        {product.stock! < 1 ? (
           <span className="rounded-md flex gap-1 items-center bg-neutral-300 px-2 py-1">
             OUT OF STOCK
           </span>

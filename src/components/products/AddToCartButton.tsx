@@ -22,7 +22,7 @@ export default function AddToCartButton({ product }: Props) {
     id: product._id,
     name: product.name!,
     price: product.price!,
-    image: { url: product.image!.url!, alt: product.image!.alt! },
+    image: { url: product.image!.url!, alt: product.image!.alt },
     discountPrice: product.discountPrice,
     quantity: 1,
   };

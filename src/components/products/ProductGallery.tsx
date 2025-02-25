@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 type Props = {
   images: {
-    url: string;
+    url: string | null;
     alt: string | null;
   }[];
 };
@@ -47,7 +47,7 @@ export default function ProductGallery({ images }: Props) {
             ref={photoRef}
             className="relative w-full max-w-4xl h-full flex-shrink-0 snap-start">
             <Image
-              src={image.url}
+              src={image.url!}
               alt={image.alt || "Product image"}
               fill
               className="object-cover"
