@@ -6,7 +6,7 @@ import WishlistButton from "./WishlistButton";
 
 export default async function Header() {
   return (
-    <header className="fixed z-10 flex justify-between p-2 w-full">
+    <header className="fixed z-90 flex justify-between p-2 w-full">
       {/* Nav */}
       <NavMenu />
 
