@@ -1,10 +1,7 @@
 import Link from "next/link";
+import NewsletterSignup from "./NewsletterSignup";
 
 export default function Footer() {
-  // TODO:
-  // Hook up newsletter submission
-  // Add correct Link hrefs
-
   return (
     <footer className="mt-auto bg-black text-gray-300 py-10 px-10">
       <div className="flex flex-col md:flex-row justify-between gap-8">
@@ -49,26 +46,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        {/* Newsletter Subscription */}
-        <div className="flex flex-col space-y-2 max-w-[300px]">
-          <h2 className="text-lg font-semibold">Subscribe to our Newsletter</h2>
-          <p className="text-sm">
-            Get the latest updates, offers, and insights.
-          </p>
-          <form className="flex flex-col md:flex-row gap-2">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-grow p-2 rounded-md text-black bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-purple-200"
-              required
-            />
-            <button
-              type="submit"
-              className="text-black bg-purple-200 hover:bg-purple-100 px-4 py-2 rounded-md transition-colors duration-300">
-              Subscribe
-            </button>
-          </form>
-        </div>
+        <NewsletterSignup />
       </div>
       <div className="mt-8 border-t border-neutral-700 pt-4 text-center text-sm">
         © {new Date().getFullYear()} DYMONÉ. All rights reserved.
