@@ -16,7 +16,7 @@ export default function ShopLayout({
       {children}
       <Footer />
       <SanityLive />
-      <Toaster />
+      <Toaster position="top-center" />
     </ClerkProvider>
   );
 }

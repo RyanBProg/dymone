@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getSanityUserOrders } from "@/actions/user/userActions";
 import { ChevronLeft, Package } from "lucide-react";
 import Link from "next/link";

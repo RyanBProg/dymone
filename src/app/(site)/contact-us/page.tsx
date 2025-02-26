@@ -1,9 +1,42 @@
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+"use client";
+
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { Mail, Phone, MapPin, Clock, CircleCheck } from "lucide-react";
+import { useState } from "react";
+import { set } from "sanity";
 
 export default function ContactPage() {
-  // TODO:
-  // Refine styling
-  // Hook up contact form
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageSent, setMessageSent] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSending(true);
+
+    await fetch("/api/resend", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        subject,
+        message,
+      }),
+    });
+
+    setName("");
+    setEmail("");
+    setSubject("");
+    setMessage("");
+    setIsSending(false);
+    setMessageSent(true);
+  };
 
   return (
     <main className="bg-neutral-100 text-neutral-800 my-20 md:my-44 px-4">
@@ -45,58 +78,83 @@ export default function ContactPage() {
           </div>
 
           <div className="bg-white p-8 rounded-xl shadow-sm">
-            <h2 className="text-xl font-medium mb-6">Send a Message</h2>
-            <form className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm mb-1">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="w-full p-2 border border-neutral-200 rounded-lg focus:outline-none focus:border-neutral-400"
-                  required
+            {messageSent ? (
+              <div className="h-full flex flex-col items-center justify-center gap-10">
+                <h2 className="text-center font-medium">
+                  Message sent successfully
+                </h2>
+                <CircleCheck
+                  size={64}
+                  color="#33cc33"
+                  strokeWidth={1.5}
+                  className="mx-auto"
                 />
               </div>
-              <div>
-                <label htmlFor="email" className="block text-sm mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full p-2 border border-neutral-200 rounded-lg focus:outline-none focus:border-neutral-400"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="subject" className="block text-sm mb-1">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  className="w-full p-2 border border-neutral-200 rounded-lg focus:outline-none focus:border-neutral-400"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm mb-1">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows={4}
-                  className="w-full p-2 border border-neutral-200 rounded-lg focus:outline-none focus:border-neutral-400 resize-none"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-black text-white py-3 rounded-lg hover:bg-neutral-800 transition-colors">
-                Send Message
-              </button>
-            </form>
+            ) : (
+              <>
+                <h2 className="text-xl font-medium mb-6">Send a Message</h2>
+                <form onSubmit={onSubmit} className="space-y-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm mb-1">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full p-2 border border-neutral-200 rounded-lg focus:outline-none focus:border-neutral-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm mb-1">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full p-2 border border-neutral-200 rounded-lg focus:outline-none focus:border-neutral-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="subject" className="block text-sm mb-1">
+                      Subject
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                      className="w-full p-2 border border-neutral-200 rounded-lg focus:outline-none focus:border-neutral-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="block text-sm mb-1">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      rows={4}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      className="w-full p-2 border border-neutral-200 rounded-lg focus:outline-none focus:border-neutral-400 resize-none"
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={isSending}
+                    className={`${isSending ? "hover:cursor-auto bg-neutral-500" : "hover:bg-neutral-800 bg-black"} w-full text-white py-3 rounded-lg transition-colors`}>
+                    {isSending ? <LoadingSpinner size="sm" /> : "Send Message"}
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
 
