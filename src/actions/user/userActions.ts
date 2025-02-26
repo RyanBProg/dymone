@@ -1,6 +1,10 @@
 "use server";
 
-import { getUser, getUserWishlist } from "@/lib/utils/sanity/sanityQueries";
+import {
+  getUser,
+  getUsersOrders,
+  getUserWishlist,
+} from "@/lib/utils/sanity/sanityQueries";
 import { sanityDevClient } from "@/sanity/lib/backendClient";
 import { UserDetailsSchema } from "@/zod/userDetailsSchema";
 import { currentUser } from "@clerk/nextjs/server";
@@ -51,6 +55,29 @@ export const updateUserDetails = async (formData: UserDetailsSchema) => {
     return { success: true };
   } catch (error) {
     console.error("UpdateUserDetails error:", error);
+    return { success: false };
+  }
+};
+
+// Orders
+export const getSanityUserOrders = async () => {
+  try {
+    const sanityUser = await getSanityUser();
+    if (!sanityUser.success || !sanityUser.user) {
+      throw new Error("No sanity user found");
+    }
+
+    const userOrders = await getUsersOrders(sanityUser.user._id);
+    if (!userOrders.success || !userOrders.orders) {
+      throw new Error("No orders found");
+    }
+
+    return {
+      success: true,
+      orders: userOrders.orders,
+    };
+  } catch (error) {
+    console.log("getSanityUserOrders error: ", error);
     return { success: false };
   }
 };

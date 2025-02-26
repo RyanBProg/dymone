@@ -238,3 +238,43 @@ export const checkCartStock = async (cart: CartItem[]) => {
     return { success: false };
   }
 };
+
+export const getUsersOrders = async (userId: string) => {
+  try {
+    if (!userId) {
+      throw new Error("No userId provided");
+    }
+
+    const USER_ORDERS = defineQuery(
+      `*[_type == "order" && user._ref == "aYLk16ndMw3QusF2tN2Aew"]{
+        _id,
+        orderId,
+        user,
+        "products": items[]{
+          price,
+          quantity,
+          product -> {_id, name, 
+          "image": { "alt": images[0].alt, "url": images[0].asset->url },
+          },
+        },
+        total,
+        status,
+        trackingNumber,
+        shippingMethod,
+        paymentStatus,
+        shippingAddress,
+        _createdAt,
+      } | order(_createdAt desc)`
+    );
+
+    const { data } = await sanityFetch({
+      query: USER_ORDERS,
+      params: { userId },
+    });
+
+    return { success: true, orders: data };
+  } catch (error) {
+    console.error("getAllProductStones: ", error);
+    return { success: false };
+  }
+};

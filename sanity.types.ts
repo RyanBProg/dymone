@@ -137,6 +137,13 @@ export type Order = {
   trackingNumber?: string;
   shippingMethod?: string;
   paymentStatus?: "pending" | "paid" | "failed" | "refunded";
+  shippingAddress?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  };
 };
 
 export type User = {
@@ -603,6 +610,43 @@ export type GET_USERResult = {
   };
   phoneNumber?: string;
 } | null;
+// Variable: USER_ORDERS
+// Query: *[_type == "order" && user._ref == "aYLk16ndMw3QusF2tN2Aew"]{        _id,        orderId,        user,        "products": items[]{          price,          quantity,          product -> {_id, name,           "image": { "alt": images[0].alt, "url": images[0].asset->url },          },        },        total,        status,        trackingNumber,        shippingMethod,        paymentStatus,        shippingAddress,        _createdAt,      } | order(_createdAt desc)
+export type USER_ORDERSResult = Array<{
+  _id: string;
+  orderId: string | null;
+  user: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  } | null;
+  products: Array<{
+    price: number | null;
+    quantity: number | null;
+    product: {
+      _id: string;
+      name: string | null;
+      image: {
+        alt: string | null;
+        url: string | null;
+      };
+    } | null;
+  }> | null;
+  total: number | null;
+  status: "cancelled" | "delivered" | "pending" | "processing" | "shipped" | null;
+  trackingNumber: string | null;
+  shippingMethod: string | null;
+  paymentStatus: "failed" | "paid" | "pending" | "refunded" | null;
+  shippingAddress: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  } | null;
+  _createdAt: string;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -615,5 +659,6 @@ declare module "@sanity/client" {
     "{\n    \"total\": count(*[_type == \"product\"]),\n    \"products\": *[_type == \"product\"]\n      {\n        _id,\n        sku,\n        \"slug\": slug.current,\n        name,\n        \"image\": { \"alt\": images[0].alt, \"url\": images[0].asset->url },\n        price,\n        discountPrice,\n        gender,\n        productCategory,\n        material,\n        stone,\n        stock,\n        _updatedAt,\n        _createdAt,\n        isFeatured\n      } | order(price asc)\n    }": ALL_PRODUCTS_PREVIEWResult;
     "*[_type == \"wishlist\" && user._ref == $userId]{\n      user,\n      \"products\": products[] -> {\n        _id,\n        name,\n        price,\n        discountPrice,\n        \"image\": { \"alt\": images[0].alt, \"url\": images[0].asset->url },\n        },\n      }[0]": USER_WISHLISTResult;
     "*[_type == \"user\" && clerkId == $clerkUserId][0]": GET_USERResult;
+    "*[_type == \"order\" && user._ref == \"aYLk16ndMw3QusF2tN2Aew\"]{\n        _id,\n        orderId,\n        user,\n        \"products\": items[]{\n          price,\n          quantity,\n          product -> {_id, name, \n          \"image\": { \"alt\": images[0].alt, \"url\": images[0].asset->url },\n          },\n        },\n        total,\n        status,\n        trackingNumber,\n        shippingMethod,\n        paymentStatus,\n        shippingAddress,\n        _createdAt,\n      } | order(_createdAt desc)": USER_ORDERSResult;
   }
 }
