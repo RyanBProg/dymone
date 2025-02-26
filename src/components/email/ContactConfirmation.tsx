@@ -39,8 +39,8 @@ export const ContactConfirmation: React.FC<Readonly<EmailTemplateProps>> = ({
           lineHeight: "1.6",
           marginBottom: "24px",
         }}>
-        Thank you for getting in touch with us. We've received your message and
-        appreciate you taking the time to reach out.
+        Thank you for getting in touch with us. We&apos;ve received your message
+        and appreciate you taking the time to reach out.
       </p>
 
       <p

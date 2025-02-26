@@ -3,7 +3,6 @@
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { Mail, Phone, MapPin, Clock, CircleCheck } from "lucide-react";
 import { useState } from "react";
-import { set } from "sanity";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
